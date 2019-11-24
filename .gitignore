@@ -1,0 +1,37 @@
+.idea
+.env
+data/
+requests/
+
+# Byte-compiled / optimized / DLL files
+code/__pycache__/
+code/*.py[cod]
+code/*$py.class
+
+# C extensions
+code/*.so
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Scrapy stuff:
+code/.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# celery beat schedule file
+celerybeat-schedule
+
+# mkdocs documentation
+site
