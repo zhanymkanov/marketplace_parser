@@ -29,11 +29,11 @@ class ReviewsSpider(scrapy.Spider):
 
         self.PARSE_FILE = f'../data/products/{self.PARSE_DATE}/{category}-list.json'
         self.OUTPUT_DATE = f'../data/reviews/{self.OUTPUT_DATE}/{category}'
-
-    def start_requests(self):
-        self.log(f"Parser for {self.category} has been started.")
         os.makedirs(self.OUTPUT_DATE, exist_ok=True)
 
+        self.log(f"Parser for {self.category} has been started.")
+
+    def start_requests(self):
         with open(self.PARSE_FILE) as products_json:
             products = json.load(products_json)
             for product in products:
