@@ -56,139 +56,207 @@ class ListSpider(scrapy.Spider):
                                  dont_filter=True)
 
 
-class BeautyListSpider(ListSpider):
+class BeautySpider(ListSpider):
     name = 'beauty-list'
     category_link = 'beauty%20care%20equipment'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class PerfumeListSpider(ListSpider):
+class PerfumeSpider(ListSpider):
     name = 'perfumes-list'
     category_link = 'perfumes'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class BooksListSpider(ListSpider):
+class BooksSpider(ListSpider):
     name = 'books-list'
     category_link = 'books'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class CarAudioListSpider(ListSpider):
+class CarAudioSpider(ListSpider):
     name = 'car-audio-list'
     category_link = 'car%20audio'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class CarElectronicsListSpider(ListSpider):
+class CarElectronicsSpider(ListSpider):
     name = 'car-electronics-list'
     category_link = 'car%20electronics'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class HeadphonesListSpider(ListSpider):
+class HeadphonesSpider(ListSpider):
     name = 'headphones-list'
     category_link = 'headphones'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class BigHomeAppliancesListSpider(ListSpider):
+class BigHomeAppliancesSpider(ListSpider):
     name = 'big-home-appl-list'
     category_link = 'big%20home%20appliances'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class SmallHomeAppliancesListSpider(ListSpider):
+class SmallHomeAppliancesSpider(ListSpider):
     name = 'small-home-appl-list'
     category_link = 'small%20home%20appliances'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class ClimateEquipmentListSpider(ListSpider):
+class ClimateEquipmentSpider(ListSpider):
     name = 'climate-equipment-list'
     category_link = 'climate%20equipment'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class KitchenAppliancesListSpider(ListSpider):
+class KitchenAppliancesSpider(ListSpider):
     name = 'kitchen-home-appl-list'
     category_link = 'kitchen%20appliances'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class MemoryCardsListSpider(ListSpider):
+class MemoryCardsSpider(ListSpider):
     name = 'memory-cards-list'
     category_link = 'memory%20cards'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class PortableSpeakersListSpider(ListSpider):
+class PortableSpeakersSpider(ListSpider):
     name = 'portable-speakers-list'
     category_link = 'portable%20speakers'
     limit = 20
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link, self.limit)
 
 
-class PowerBanksListSpider(ListSpider):
+class PowerBanksSpider(ListSpider):
     name = 'power-banks-list'
     category_link = 'power%20banks'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class SmartphoneListSpider(ListSpider):
+class SmartphonesSpider(ListSpider):
     name = 'smartphones-list'
     category_link = 'smartphones'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class TiresListSpider(ListSpider):
+class TiresSpider(ListSpider):
     name = 'tires-list'
     category_link = 'tires'
     limit = 20
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link, self.limit)
 
 
-class WatchesListSpider(ListSpider):
+class WatchesSpider(ListSpider):
     name = 'watches-list'
     category_link = 'smart%20watches'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
 
 
-class WearablesListSpider(ListSpider):
+class WearablesSpider(ListSpider):
     name = 'wearables-list'
     category_link = 'wearables'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
 
     def __init__(self):
         super().__init__(self.category_link)
