@@ -3,6 +3,7 @@ import json
 import os
 import datetime as dt
 from decouple import config
+import logging
 
 
 class ReviewsSpider(scrapy.Spider):
@@ -16,156 +17,244 @@ class ReviewsSpider(scrapy.Spider):
     def __init__(self, category):
         super().__init__()
         self.category = category
+
         today = str(dt.date.today())
-        self.PARSE_DATE = today if os.path.exists(f'../data/products/{today}') else '2019-11-19'
         self.OUTPUT_DATE = today
-        self.INPUT_FILE = f'../data/products/{self.PARSE_DATE}/{category}-list.json'
+
+        if os.path.exists(f'../data/products/{today}'):
+            self.PARSE_DATE = today
+        else:
+            self.PARSE_DATE = '2019-12-13'
+            self.logger.warning(f'Path ../data/products/{today} does not exist, 2019-12-13 is used')
+
+        self.PARSE_FILE = f'../data/products/{self.PARSE_DATE}/{category}-list.json'
         self.OUTPUT_DATE = f'../data/reviews/{self.OUTPUT_DATE}/{category}'
 
     def start_requests(self):
+        self.log(f"Parser for {self.category} has been started.")
         os.makedirs(self.OUTPUT_DATE, exist_ok=True)
 
-        with open(self.INPUT_FILE) as products_json:
+        with open(self.PARSE_FILE) as products_json:
             products = json.load(products_json)
             for product in products:
-                id, reviews_quantity = product['id'], product['reviewsQuantity'] + (product['reviewsQuantity'] >> 1)
-                if reviews_quantity:
+                id, reviews_quantity = product['id'], 4000
+                if product['reviewsQuantity']:
                     yield scrapy.Request(
                         url=self.url.format(id, reviews_quantity),
                         headers=self.headers,
                         callback=self.parse_reviews,
-                        cb_kwargs={'id': id}
+                        cb_kwargs={'id': id, 'reviews_quantity': product['reviewsQuantity']}
                     )
 
-    def parse_reviews(self, response, id):
+    def parse_reviews(self, response, id, reviews_quantity):
         data = response.body_as_unicode()
         with open(f'{self.OUTPUT_DATE}/{id}.json', 'w') as f:
             f.write(data)
 
+        data = json.loads(data)
+        if reviews_quantity != len(data['data']):
+            self.logger.warning(f'Product with id={id} received {len(data["data"])} reviews, but has {reviews_quantity}')
 
-class BeautyReviewsSpider(ReviewsSpider):
+
+class BeautySpider(ReviewsSpider):
     name = "beauty-reviews"
     category = "beauty"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class BigHomeAppReviewsSpider(ReviewsSpider):
+class BigHomeAppSpider(ReviewsSpider):
     name = "bha-reviews"
-    category = "bha"
+    category = "big-home-appl"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class SmallHomeAppReviewsSpider(ReviewsSpider):
+class SmallHomeAppSpider(ReviewsSpider):
     name = "sha-reviews"
-    category = "sha"
+    category = "small-home-appl"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class KitchenHomeAppReviewsSpider(ReviewsSpider):
+class KitchenHomeAppSpider(ReviewsSpider):
     name = "kha-reviews"
-    category = "kha"
+    category = "kitchen-home-appl"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class ClimateEquipmentReviewsSpider(ReviewsSpider):
+class ClimateEquipmentSpider(ReviewsSpider):
     name = "climate-reviews"
-    category = "climate"
+    category = "climate-equipment"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class BooksReviewsSpider(ReviewsSpider):
+class BooksSpider(ReviewsSpider):
     name = "books-reviews"
     category = "books"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class HeadphonesReviewsSpider(ReviewsSpider):
+class HeadphonesSpider(ReviewsSpider):
     name = "headphones-reviews"
     category = "headphones"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class PerfumesReviewsSpider(ReviewsSpider):
+class PerfumesSpider(ReviewsSpider):
     name = "perfumes-reviews"
     category = "perfumes"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class CarAudioReviewsSpider(ReviewsSpider):
+class CarAudioSpider(ReviewsSpider):
     name = "car-audio-reviews"
     category = "car-audio"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class CarElectronicsReviewsSpider(ReviewsSpider):
+class CarElectronicsSpider(ReviewsSpider):
     name = "car-electronics-reviews"
     category = "car-electronics"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class MemoryCardsReviewsSpider(ReviewsSpider):
+class MemoryCardsSpider(ReviewsSpider):
     name = "memory-cards-reviews"
     category = "memory-cards"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class PowerBanksReviewsSpider(ReviewsSpider):
+class PowerBanksSpider(ReviewsSpider):
     name = "power-banks-reviews"
     category = "power-banks"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class TiresReviewsSpider(ReviewsSpider):
+class TiresSpider(ReviewsSpider):
     name = "tires-reviews"
     category = "tires"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class WatchesReviewsSpider(ReviewsSpider):
+class WatchesSpider(ReviewsSpider):
     name = "watches-reviews"
     category = "watches"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class WearablesReviewsSpider(ReviewsSpider):
+class WearablesSpider(ReviewsSpider):
     name = "wearables-reviews"
     category = 'wearables'
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
 
 
-class SmartphonesReviewsSpider(ReviewsSpider):
+class SmartphonesSpider(ReviewsSpider):
     name = "smartphones-reviews"
     category = "smartphones"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
+
+    def __init__(self):
+        super().__init__(self.category)
+
+
+class PortableSpeakersSpider(ReviewsSpider):
+    name = "portable-speakers-reviews"
+    category = "portable-speakers"
+    custom_settings = {
+        'LOG_FILE': f'{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
 
     def __init__(self):
         super().__init__(self.category)
