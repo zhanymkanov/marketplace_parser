@@ -2,6 +2,7 @@
 .env
 data/
 requests/
+code/logs
 
 # Byte-compiled / optimized / DLL files
 code/__pycache__/
