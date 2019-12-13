@@ -6,9 +6,6 @@ from decouple import config
 
 
 class ReviewsSpider(scrapy.Spider):
-    PARSE_DATE = str(dt.date.today()) if os.path.exists(f'../data/products/{dt.date.today()}') else '2019-11-19'
-    OUTPUT_DATE = str(dt.date.today())
-
     url = config('API_REVIEWS_URL')
     headers = {
         "Accept": "application/json, text/*", "Accept-Encoding": "gzip, deflate, br",
@@ -19,6 +16,9 @@ class ReviewsSpider(scrapy.Spider):
     def __init__(self, category):
         super().__init__()
         self.category = category
+        today = str(dt.date.today())
+        self.PARSE_DATE = today if os.path.exists(f'../data/products/{today}') else '2019-11-19'
+        self.OUTPUT_DATE = today
         self.INPUT_FILE = f'../data/products/{self.PARSE_DATE}/{category}-list.json'
         self.OUTPUT_DATE = f'../data/reviews/{self.OUTPUT_DATE}/{category}'
 
