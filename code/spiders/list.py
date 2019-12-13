@@ -16,11 +16,12 @@ class ListSpider(scrapy.Spider):
                              "AppleWebKit/604.1.38 (KHTML, like Gecko) "
                              "Version/11.0 Mobile/15A372 Safari/604.1"}
 
-    def __init__(self, category, limit=None):
+    def __init__(self, category, stop_if_no_reviews=True):
         super().__init__()
         self.url = self.url.format(category=category, page='{}')
         self.headers['Referer'] = self.referer_link.format(category)
-        self.limit = limit
+        self.category = category
+        self.stop_if_no_reviews = stop_if_no_reviews
 
     def start_requests(self):
         url = self.url.format(self.page)
@@ -29,8 +30,10 @@ class ListSpider(scrapy.Spider):
                              dont_filter=True)
 
     def parse_products(self, response):
+        total_reviews = 0
         products = json.loads(response.text)
         for product in products['data']:
+            total_reviews += product['reviewsQuantity']
             yield {
                 'id': product['id'],
                 'title': product['title'],
@@ -41,10 +44,11 @@ class ListSpider(scrapy.Spider):
                 'unitPrice': product['unitPrice'],
                 'unitSalePrice': product['unitSalePrice'],
                 'categoryId': product['categoryId'],
+                'categoryName': self.category,
             }
 
         if products['data']:
-            if self.limit and self.page >= self.limit:
+            if self.stop_if_no_reviews and total_reviews == 0:
                 return
 
             self.page += 1
@@ -54,6 +58,18 @@ class ListSpider(scrapy.Spider):
                                  headers=self.headers,
                                  callback=self.parse_products,
                                  dont_filter=True)
+
+
+class SmartphonesSpider(ListSpider):
+    name = 'smartphones-list'
+    category_link = 'smartphones'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_URI': f'{name}.json'
+    }
+
+    def __init__(self):
+        super().__init__(self.category_link, stop_if_no_reviews=False)
 
 
 class BeautySpider(ListSpider):
@@ -191,14 +207,13 @@ class MemoryCardsSpider(ListSpider):
 class PortableSpeakersSpider(ListSpider):
     name = 'portable-speakers-list'
     category_link = 'portable%20speakers'
-    limit = 20
     custom_settings = {
         'FEED_FORMAT': 'json',
         'FEED_URI': f'{name}.json'
     }
 
     def __init__(self):
-        super().__init__(self.category_link, self.limit)
+        super().__init__(self.category_link)
 
 
 class PowerBanksSpider(ListSpider):
@@ -213,9 +228,9 @@ class PowerBanksSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class SmartphonesSpider(ListSpider):
-    name = 'smartphones-list'
-    category_link = 'smartphones'
+class TiresSpider(ListSpider):
+    name = 'tires-list'
+    category_link = 'tires'
     custom_settings = {
         'FEED_FORMAT': 'json',
         'FEED_URI': f'{name}.json'
@@ -223,19 +238,6 @@ class SmartphonesSpider(ListSpider):
 
     def __init__(self):
         super().__init__(self.category_link)
-
-
-class TiresSpider(ListSpider):
-    name = 'tires-list'
-    category_link = 'tires'
-    limit = 20
-    custom_settings = {
-        'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
-    }
-
-    def __init__(self):
-        super().__init__(self.category_link, self.limit)
 
 
 class WatchesSpider(ListSpider):
