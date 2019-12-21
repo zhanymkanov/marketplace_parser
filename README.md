@@ -13,12 +13,13 @@ Then, reviews crawler (`spiders/reviews.py`):
 2. Makes a GET request to an API using product's ID and category for receiving .json list of its reviews
 3. Crawler saves the data separating it by category folders, whereas each product has its JSON file with all downloaded reviews.
 
+#### Comment on API access
 <i>
-  Although Kaspi's API is not private, it is not public either. 
+  Although Kaspi's API is not private, it is nor public. 
   
   I had to do some stuff with my outgoing traffic to find out its endpoints. 
   
-  Therefore, I think it is not thetical to put it online but to share it with anyone who might need it.
+  Therefore, I think it is not tethical to put it online but to share it with anyone who might need it.
 </i>
 
 ## Installation
