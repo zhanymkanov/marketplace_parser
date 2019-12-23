@@ -19,7 +19,7 @@ Then, reviews crawler (`spiders/reviews.py`):
   
   I had to do some stuff with my outgoing traffic to find out its endpoints. 
   
-  Therefore, I think it is not tethical to put it online but I am willing to share it with anyone who might need it directly.
+  Therefore, I think it is not tethical to put it online but I am willing to share it with anyone who might need it.
 </i>
 
 ## Installation
