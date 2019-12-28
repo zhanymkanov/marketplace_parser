@@ -30,9 +30,12 @@ If you do not have pipenv installed, install it:
 
 `pip3 install pipenv`
 
+Then, to install all packages:
+
+`pipenv install`
+
 ## Parser usage
 ```
-pipenv install
 pipenv shell
 cd code
 ```
