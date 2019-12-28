@@ -26,16 +26,19 @@ Then, reviews crawler (`spiders/reviews.py`):
 ```
 git clone https://github.com/n1EzeR/kaspi_parser/
 ```
+If you do not have pipenv installed, install it:
+
+`pip3 install pipenv`
+
 ## Parser usage
 ```
-pip install pipenv
 pipenv install
 pipenv shell
 cd code
 ```
-Run products_crawler.py to scrap information about all products among chosen (uncommented) categories
+Run `python products_crawler.py` to scrap information about all products among chosen (uncommented) categories
 
-Run reviews_crawler.py to collect all reviews of each already scrapped products
+Run `python reviews_crawler.py` to collect all reviews of each already scrapped products
 
 ## TODO
 1. Parse the detailed information of each product
