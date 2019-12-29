@@ -1,5 +1,7 @@
-import scrapy
 import json
+from datetime import date
+
+import scrapy
 from decouple import config
 
 
@@ -65,7 +67,7 @@ class SmartphonesSpider(ListSpider):
     category_link = 'smartphones'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -77,7 +79,7 @@ class BeautySpider(ListSpider):
     category_link = 'beauty%20care%20equipment'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -89,7 +91,7 @@ class PerfumeSpider(ListSpider):
     category_link = 'perfumes'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -101,7 +103,7 @@ class BooksSpider(ListSpider):
     category_link = 'books'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -113,7 +115,7 @@ class CarAudioSpider(ListSpider):
     category_link = 'car%20audio'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -125,7 +127,7 @@ class CarElectronicsSpider(ListSpider):
     category_link = 'car%20electronics'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -137,7 +139,7 @@ class HeadphonesSpider(ListSpider):
     category_link = 'headphones'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -149,7 +151,7 @@ class BigHomeAppliancesSpider(ListSpider):
     category_link = 'big%20home%20appliances'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -161,7 +163,7 @@ class SmallHomeAppliancesSpider(ListSpider):
     category_link = 'small%20home%20appliances'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -173,7 +175,7 @@ class ClimateEquipmentSpider(ListSpider):
     category_link = 'climate%20equipment'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -185,7 +187,7 @@ class KitchenAppliancesSpider(ListSpider):
     category_link = 'kitchen%20appliances'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -197,7 +199,7 @@ class MemoryCardsSpider(ListSpider):
     category_link = 'memory%20cards'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -209,7 +211,7 @@ class PortableSpeakersSpider(ListSpider):
     category_link = 'portable%20speakers'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -221,7 +223,7 @@ class PowerBanksSpider(ListSpider):
     category_link = 'power%20banks'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -233,7 +235,7 @@ class TiresSpider(ListSpider):
     category_link = 'tires'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -245,7 +247,7 @@ class WatchesSpider(ListSpider):
     category_link = 'smart%20watches'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
@@ -257,7 +259,7 @@ class WearablesSpider(ListSpider):
     category_link = 'wearables'
     custom_settings = {
         'FEED_FORMAT': 'json',
-        'FEED_URI': f'{name}.json'
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
     def __init__(self):
