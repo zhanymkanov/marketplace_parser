@@ -61,7 +61,7 @@ Run reviews crawler to collect all reviews of each already scrapped products.
 python reviews_crawler.py
 ```
 
-Although, it is possible to run them all at once, I recommend you to parse reviews one by one, so that you could check each category integrity
+Although, it is possible to run them all at once, I recommend you to parse reviews one by one (comment/uncomment categories), so that you could check each category integrity
 
 ## Further development
 1. Parse the detailed information of each product
