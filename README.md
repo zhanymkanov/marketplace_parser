@@ -1,6 +1,12 @@
-## About
+# About
 The project helps to parse https://kaspi.kz/shop/ (largest Kazakhstani marketplace) products and reviews using its API.
 
+## Parsed data can be downloaded here:
+https://github.com/n1EzeR/kaspi_reviews_dataset
+- Partially cleaned (both row and cleaned versioans are available though)
+- ~120k rows
+
+# Parser
 ## Parser steps
 Products crawler (`spiders/list.py`) saves data by category in JSON files with products information such as:
 1. ID
