@@ -12,7 +12,7 @@ class ListSpider(scrapy.Spider):
 
     headers = {"Accept": "application/json, text/*", "Accept-Encoding": "gzip, deflate, br",
                "Accept-Language": "ru,en;q=0.9,kk;q=0.8,es;q=0.7,ba;q=0.6", "Connection": "keep-alive",
-               "Host": "kaspi.kz", "Referrer Policy": "no-referrer-when-downgrade",
+               "Host": config('host'), "Referrer Policy": "no-referrer-when-downgrade",
                "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "same-origin",
                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) "
                              "AppleWebKit/604.1.38 (KHTML, like Gecko) "
