@@ -1,0 +1,2 @@
+class EmptyDirectoryException(Exception):
+    pass

@@ -1,9 +1,12 @@
-import scrapy
 import json
-import os
-import datetime as dt
-from decouple import config
 import logging
+import os
+from datetime import date
+
+import scrapy
+from decouple import config
+
+from .utils import get_parse_date
 
 
 class ReviewsSpider(scrapy.Spider):
@@ -16,51 +19,50 @@ class ReviewsSpider(scrapy.Spider):
 
     def __init__(self, category):
         super().__init__()
+        today = str(date.today())
+        reviews_dir = '../data/reviews'
+        products_dir = '../data/products'
+
         self.category = category
+        self.parse_date = get_parse_date(products_dir, today)
+        self.parse_list = f'{products_dir}/{self.parse_date}/{category}-list.json'
 
-        today = str(dt.date.today())
-        self.OUTPUT_DATE = today
-
-        if os.path.exists(f'../data/products/{today}'):
-            self.PARSE_DATE = today
-        else:
-            self.PARSE_DATE = '2019-12-13'
-            self.logger.warning(f'Path ../data/products/{today} does not exist, 2019-12-13 is used')
-
-        self.PARSE_FILE = f'../data/products/{self.PARSE_DATE}/{category}-list.json'
-        self.OUTPUT_DATE = f'../data/reviews/{self.OUTPUT_DATE}/{category}'
-        os.makedirs(self.OUTPUT_DATE, exist_ok=True)
+        self.output_dir = f'{reviews_dir}/{today}/{category}'
+        os.makedirs(self.output_dir, exist_ok=True)
 
         self.log(f"Parser for {self.category} has been started.")
 
     def start_requests(self):
-        with open(self.PARSE_FILE) as products_json:
+        with open(self.parse_list) as products_json:
             products = json.load(products_json)
             for product in products:
-                id, reviews_quantity = product['id'], 4000
-                if product['reviewsQuantity']:
-                    yield scrapy.Request(
-                        url=self.url.format(id, reviews_quantity),
-                        headers=self.headers,
-                        callback=self.parse_reviews,
-                        cb_kwargs={'id': id, 'reviews_quantity': product['reviewsQuantity']}
-                    )
+                yield scrapy.Request(
+                    url=self.url.format(product['id'], 4000),  # link is like /product/1001/reviews?limit=5
+                    headers=self.headers,
+                    callback=self.parse_reviews,
+                    cb_kwargs={'product_id': product['id'], 'actual_reviews_quantity': product['reviewsQuantity']}
+                )
 
-    def parse_reviews(self, response, id, reviews_quantity):
-        data = response.body_as_unicode()
-        with open(f'{self.OUTPUT_DATE}/{id}.json', 'w') as f:
-            f.write(data)
+    def parse_reviews(self, response, product_id, actual_reviews_quantity):
+        reviews_json = response.body_as_unicode()
+        with open(f'{self.output_dir}/{product_id}.json', 'w') as f:
+            f.write(reviews_json)
 
-        data = json.loads(data)
-        if reviews_quantity != len(data['data']):
-            self.logger.warning(f'Product with id={id} received {len(data["data"])} reviews, but has {reviews_quantity}')
+        reviews = json.loads(reviews_json)
+        parsed_reviews_quantity = len(reviews['data'])
+
+        if actual_reviews_quantity != parsed_reviews_quantity:
+            self.logger.warning(
+                f'Product with id={product_id} received {parsed_reviews_quantity} reviews, '
+                f'but has {actual_reviews_quantity}'
+            )
 
 
 class BeautySpider(ReviewsSpider):
     name = "beauty-reviews"
     category = "beauty"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -72,7 +74,7 @@ class BigHomeAppSpider(ReviewsSpider):
     name = "bha-reviews"
     category = "big-home-appl"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -84,7 +86,7 @@ class SmallHomeAppSpider(ReviewsSpider):
     name = "sha-reviews"
     category = "small-home-appl"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -96,7 +98,7 @@ class KitchenHomeAppSpider(ReviewsSpider):
     name = "kha-reviews"
     category = "kitchen-home-appl"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -108,7 +110,7 @@ class ClimateEquipmentSpider(ReviewsSpider):
     name = "climate-reviews"
     category = "climate-equipment"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -120,7 +122,7 @@ class BooksSpider(ReviewsSpider):
     name = "books-reviews"
     category = "books"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -132,7 +134,7 @@ class HeadphonesSpider(ReviewsSpider):
     name = "headphones-reviews"
     category = "headphones"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -144,7 +146,7 @@ class PerfumesSpider(ReviewsSpider):
     name = "perfumes-reviews"
     category = "perfumes"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -156,7 +158,7 @@ class CarAudioSpider(ReviewsSpider):
     name = "car-audio-reviews"
     category = "car-audio"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -168,7 +170,7 @@ class CarElectronicsSpider(ReviewsSpider):
     name = "car-electronics-reviews"
     category = "car-electronics"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -180,7 +182,7 @@ class MemoryCardsSpider(ReviewsSpider):
     name = "memory-cards-reviews"
     category = "memory-cards"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -192,7 +194,7 @@ class PowerBanksSpider(ReviewsSpider):
     name = "power-banks-reviews"
     category = "power-banks"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -204,7 +206,7 @@ class TiresSpider(ReviewsSpider):
     name = "tires-reviews"
     category = "tires"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -216,7 +218,7 @@ class WatchesSpider(ReviewsSpider):
     name = "watches-reviews"
     category = "watches"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -228,7 +230,7 @@ class WearablesSpider(ReviewsSpider):
     name = "wearables-reviews"
     category = 'wearables'
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -240,7 +242,7 @@ class SmartphonesSpider(ReviewsSpider):
     name = "smartphones-reviews"
     category = "smartphones"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
@@ -252,7 +254,7 @@ class PortableSpeakersSpider(ReviewsSpider):
     name = "portable-speakers-reviews"
     category = "portable-speakers"
     custom_settings = {
-        'LOG_FILE': f'{name}.log'
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
     }
     logging.getLogger().addHandler(logging.StreamHandler())
 
