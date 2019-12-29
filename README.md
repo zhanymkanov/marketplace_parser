@@ -47,11 +47,17 @@ pipenv install
 pipenv shell
 cd code
 ```
-Run `python products_crawler.py` to scrap information about all products among chosen (uncommented) categories in `products_crawler.py`
+Run the products crawler to scrap information about all products among chosen (uncommented) categories in `products_crawler.py`. Although, it is possible to run them all at once, I recommend you to do it one by one, so that you could check each dataset
 
-Althgough, it is possible to run them all at once, I recommend you to do it one by one, so that you could check each dataset
+```
+python products_crawler.py
+```
 
-Run `python reviews_crawler.py` to collect all reviews of each already scrapped products
+
+Run reviews crawler to collect all reviews of each already scrapped products
+```
+python reviews_crawler.py
+```
 
 ## Further development
 1. Parse the detailed information of each product
