@@ -22,11 +22,11 @@ Then, reviews crawler (`spiders/reviews.py`):
 
 #### Comment on API access
 <i>
-  Although Kaspi's API is not private, it is nor public. 
+  Although API is not private, it is nor public. 
   
   I had to do some stuff with my outgoing traffic to find out its endpoints. 
   
-  Therefore, I think it is not tethical to put it online but I am willing to share it with anyone who might need it.
+  Therefore, I think it is not tethical to put it online.
 </i>
 
 ## Installation
@@ -42,7 +42,7 @@ git clone https://github.com/n1EzeR/reviews_parser
 ```
 2. Go to project directory
 ```
-cd kaspi_parser
+cd reviews_parser
 ```
 3. Install the packages and virtual environment
 ```
