@@ -25,7 +25,7 @@ Then, reviews crawler (`spiders/reviews.py`):
 
 ## Installation
 ### Prerequisites
-1. Python 3
+1. Python 3.6+
 2. pip
 3. pipenv (`pip install pipenv`)
 
