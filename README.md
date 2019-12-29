@@ -1,5 +1,5 @@
 # About
-The project helps to parse largest Kazakhstani marketplace: products and reviews using its API.
+The project helps to parse the largest Kazakhstani marketplace: products and reviews using its API.
 
 ## Parsed data can be downloaded here:
 https://github.com/n1EzeR/russian_reviews_dataset
