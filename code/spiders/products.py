@@ -8,7 +8,7 @@ from decouple import config
 class ListSpider(scrapy.Spider):
     page = 1
     url = config('API_LIST_URL')
-    referer_link = 'https://kaspi.kz/shop/c/{}/all/?page=1'
+    referer_link = config('referer_link')
 
     headers = {"Accept": "application/json, text/*", "Accept-Encoding": "gzip, deflate, br",
                "Accept-Language": "ru,en;q=0.9,kk;q=0.8,es;q=0.7,ba;q=0.6", "Connection": "keep-alive",
