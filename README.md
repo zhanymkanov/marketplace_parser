@@ -3,7 +3,7 @@ The project helps to parse the largest Kazakhstani marketplace: products and rev
 
 ## Parsed data can be downloaded here:
 https://github.com/n1EzeR/russian_reviews_dataset
-- Partially cleaned (both row and cleaned versioans are available though)
+- Partially cleaned (both row and cleaned versions are available though)
 - ~120k rows
 
 # Parser
