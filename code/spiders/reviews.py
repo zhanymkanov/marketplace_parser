@@ -16,11 +16,10 @@ class ReviewsSpider(scrapy.Spider):
     def __init__(self, category):
         super().__init__()
 
-        today = str(date.today())
-        parse_date = get_parse_date(PRODUCTS_DIR, today)
-
+        parse_date = get_parse_date(PRODUCTS_DIR)
         self.parse_list = f'{PRODUCTS_DIR}/{parse_date}/{category}-list.json'
-        self.output_dir = f'{REVIEWS_DIR}/{today}/{category}'
+
+        self.output_dir = f'{REVIEWS_DIR}/{date.today()}/{category}'
         os.makedirs(self.output_dir, exist_ok=True)
 
         self.log(f"Parser for {category} reviews has been started.")
