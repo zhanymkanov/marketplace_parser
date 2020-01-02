@@ -6,39 +6,32 @@ from datetime import date
 import scrapy
 from decouple import config
 
+from .constants import HEADERS, PRODUCTS_DIR, REVIEWS_DIR, REVIEWS_PER_REQUEST
 from .utils import get_parse_date
 
 
 class ReviewsSpider(scrapy.Spider):
     url = config('API_REVIEWS_URL')
-    headers = {
-        "Accept": "application/json, text/*", "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "ru,en;q=0.9,kk;q=0.8,es;q=0.7,ba;q=0.6", "Connection": "keep-alive",
-        "Host": config('host'), "Cache-Control": "no-cache, no-store, max-age=0"
-    }
 
     def __init__(self, category):
         super().__init__()
+
         today = str(date.today())
-        reviews_dir = '../data/reviews'
-        products_dir = '../data/products'
+        parse_date = get_parse_date(PRODUCTS_DIR, today)
 
-        self.category = category
-        self.parse_date = get_parse_date(products_dir, today)
-        self.parse_list = f'{products_dir}/{self.parse_date}/{category}-list.json'
-
-        self.output_dir = f'{reviews_dir}/{today}/{category}'
+        self.parse_list = f'{PRODUCTS_DIR}/{parse_date}/{category}-list.json'
+        self.output_dir = f'{REVIEWS_DIR}/{today}/{category}'
         os.makedirs(self.output_dir, exist_ok=True)
 
-        self.log(f"Parser for {self.category} has been started.")
+        self.log(f"Parser for {category} reviews has been started.")
 
     def start_requests(self):
         with open(self.parse_list) as products_json:
             products = json.load(products_json)
             for product in products:
                 yield scrapy.Request(
-                    url=self.url.format(product['id'], 4000),  # link is like /product/1001/reviews?limit=5
-                    headers=self.headers,
+                    url=self.url.format(product['id'], REVIEWS_PER_REQUEST),  # url is /product/{ID}/reviews?limit={MAX}
+                    headers=HEADERS,
                     callback=self.parse_reviews,
                     cb_kwargs={'product_id': product['id'], 'actual_reviews_quantity': product['reviewsQuantity']}
                 )
