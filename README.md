@@ -8,7 +8,7 @@ https://github.com/n1EzeR/russian_reviews_dataset
 
 # Parser
 ## Parser steps
-Products crawler (`spiders/list.py`) saves data by category in JSON files with products information such as:
+Products crawler (`spiders/products.py`) saves data by category in JSON files with products information such as:
 1. ID
 2. Shop link
 3. Price
