@@ -1,8 +1,11 @@
+import copy
 import json
 from datetime import date
 
 import scrapy
 from decouple import config
+
+from .constants import HEADER_PRODUCTS
 
 
 class ListSpider(scrapy.Spider):
@@ -10,17 +13,10 @@ class ListSpider(scrapy.Spider):
     url = config('API_LIST_URL')
     referer_link = config('referer_link')
 
-    headers = {"Accept": "application/json, text/*", "Accept-Encoding": "gzip, deflate, br",
-               "Accept-Language": "ru,en;q=0.9,kk;q=0.8,es;q=0.7,ba;q=0.6", "Connection": "keep-alive",
-               "Host": config('host'), "Referrer Policy": "no-referrer-when-downgrade",
-               "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "same-origin",
-               "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) "
-                             "AppleWebKit/604.1.38 (KHTML, like Gecko) "
-                             "Version/11.0 Mobile/15A372 Safari/604.1"}
-
     def __init__(self, category, stop_if_no_reviews=True):
         super().__init__()
         self.url = self.url.format(category=category, page='{}')
+        self.headers = copy.deepcopy(HEADER_PRODUCTS)
         self.headers['Referer'] = self.referer_link.format(category)
         self.category = category
         self.stop_if_no_reviews = stop_if_no_reviews
@@ -50,14 +46,13 @@ class ListSpider(scrapy.Spider):
             }
 
         if products['data']:
-            if self.stop_if_no_reviews and total_reviews == 0:
+            if total_reviews == 0 and self.stop_if_no_reviews:
                 return
 
             self.page += 1
             url = self.url.format(self.page)
 
-            yield scrapy.Request(url=url,
-                                 headers=self.headers,
+            yield scrapy.Request(url=url, headers=self.headers,
                                  callback=self.parse_products,
                                  dont_filter=True)
 

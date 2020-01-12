@@ -6,7 +6,7 @@ from datetime import date
 import scrapy
 from decouple import config
 
-from .constants import HEADERS, PRODUCTS_DIR, REVIEWS_DIR, REVIEWS_PER_REQUEST
+from .constants import HEADER_REVIEWS, PRODUCTS_DIR, REVIEWS_DIR, REVIEWS_PER_REQUEST
 from .utils import get_parse_date
 
 
@@ -30,7 +30,7 @@ class ReviewsSpider(scrapy.Spider):
             for product in products:
                 yield scrapy.Request(
                     url=self.url.format(product['id'], REVIEWS_PER_REQUEST),  # url is /product/{ID}/reviews?limit={MAX}
-                    headers=HEADERS,
+                    headers=HEADER_REVIEWS,
                     callback=self.parse_reviews,
                     cb_kwargs={'product_id': product['id'], 'actual_reviews_quantity': product['reviewsQuantity']}
                 )

@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 scrapy = "*"
-decouple = "*"
 python-decouple = "*"
 
 [requires]
