@@ -6,7 +6,7 @@ https://github.com/n1EzeR/russian_reviews_dataset
 - Partially cleaned (both row and cleaned versions are available though)
 - ~120k rows
 
-# Parser
+# How it works
 ## Parser steps
 Products crawler (`spiders/products.py`) saves data by category in JSON files with products information such as:
 1. ID
@@ -20,12 +20,12 @@ Then, reviews crawler (`spiders/reviews.py`):
 2. Makes a GET request to an API using product's ID and category for receiving .json list of its reviews
 3. Crawler saves the data separating it by category folders, whereas each product has its JSON file with all downloaded reviews.
 
-#### Comment on API access
+### Comment on API access
 <i>
-  Although API is not private, it is nor public. 
-  
+  Although API is not private, it is nor public.
+
   I had to do some stuff with my outgoing traffic to find out its endpoints. 
-  
+
   Therefore, I think it is not tethical to put it online.
 </i>
 
