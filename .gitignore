@@ -8,9 +8,20 @@ code/logs
 code/__pycache__/
 code/*.py[cod]
 code/*$py.class
+code/spiders/__pycache__/
+code/spiders/*.py[cod]
+code/spiders/*$py.class
+
+# Daryn's toys
+venv/
+myvenv/
+.DS_Store
+code/.DS_Store
+code/spiders/.DS_Store
 
 # C extensions
 code/*.so
+code/spiders/*.so
 
 # Unit test / coverage reports
 htmlcov/

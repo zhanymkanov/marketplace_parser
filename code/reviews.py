@@ -4,7 +4,7 @@ from spiders import spider_reviews as reviews
 
 def start():
     process = CrawlerProcess()
-    # process.crawl(reviews.SmartphonesSpider)
+    process.crawl(reviews.SmartphonesSpider)
     # process.crawl(reviews.PerfumesSpider)
     # process.crawl(reviews.BeautySpider)
     # process.crawl(reviews.BooksSpider)
