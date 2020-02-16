@@ -1,10 +1,10 @@
 from scrapy.crawler import CrawlerProcess
-from spiders import products
+from spiders import spider_products as products
 
 
 def start():
     process = CrawlerProcess()
-    # process.crawl(products.SmartphonesSpider)
+    process.crawl(products.SmartphonesSpider)
     # process.crawl(products.PerfumeSpider)
     # process.crawl(products.BeautySpider)
     # process.crawl(products.BooksSpider)

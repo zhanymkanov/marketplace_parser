@@ -1,5 +1,5 @@
 from scrapy.crawler import CrawlerProcess
-from spiders import reviews
+from spiders import spider_reviews as reviews
 
 
 def start():
