@@ -5,7 +5,7 @@ from datetime import date
 import scrapy
 from decouple import config
 
-from .constants import HEADER_PRODUCTS
+from .constants import HEADER_DEFAULT
 
 
 class ListSpider(scrapy.Spider):
@@ -16,7 +16,7 @@ class ListSpider(scrapy.Spider):
     def __init__(self, category, stop_if_no_reviews=True):
         super().__init__()
         self.url = self.url.format(category=category, page='{}')
-        self.headers = copy.deepcopy(HEADER_PRODUCTS)
+        self.headers = copy.deepcopy(HEADER_DEFAULT)
         self.headers['Referer'] = self.referer_link.format(category)
         self.category = category
         self.stop_if_no_reviews = stop_if_no_reviews
@@ -62,6 +62,7 @@ class SmartphonesSpider(ListSpider):
     category_link = 'smartphones'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -74,6 +75,7 @@ class BeautySpider(ListSpider):
     category_link = 'beauty%20care%20equipment'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -86,6 +88,7 @@ class PerfumeSpider(ListSpider):
     category_link = 'perfumes'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -98,6 +101,7 @@ class BooksSpider(ListSpider):
     category_link = 'books'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -110,6 +114,7 @@ class CarAudioSpider(ListSpider):
     category_link = 'car%20audio'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -122,6 +127,7 @@ class CarElectronicsSpider(ListSpider):
     category_link = 'car%20electronics'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -134,6 +140,7 @@ class HeadphonesSpider(ListSpider):
     category_link = 'headphones'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -146,6 +153,7 @@ class BigHomeAppliancesSpider(ListSpider):
     category_link = 'big%20home%20appliances'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -158,6 +166,7 @@ class SmallHomeAppliancesSpider(ListSpider):
     category_link = 'small%20home%20appliances'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -170,6 +179,7 @@ class ClimateEquipmentSpider(ListSpider):
     category_link = 'climate%20equipment'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -182,6 +192,7 @@ class KitchenAppliancesSpider(ListSpider):
     category_link = 'kitchen%20appliances'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -194,6 +205,7 @@ class MemoryCardsSpider(ListSpider):
     category_link = 'memory%20cards'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -206,6 +218,7 @@ class PortableSpeakersSpider(ListSpider):
     category_link = 'portable%20speakers'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -218,6 +231,7 @@ class PowerBanksSpider(ListSpider):
     category_link = 'power%20banks'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -230,6 +244,7 @@ class TiresSpider(ListSpider):
     category_link = 'tires'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -242,6 +257,7 @@ class WatchesSpider(ListSpider):
     category_link = 'smart%20watches'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
@@ -254,6 +270,7 @@ class WearablesSpider(ListSpider):
     category_link = 'wearables'
     custom_settings = {
         'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
         'FEED_URI': f'../data/products/{date.today()}/{name}.json'
     }
 
