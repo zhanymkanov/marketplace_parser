@@ -2,7 +2,7 @@
 The project helps to parse the largest Kazakhstani marketplace: products and reviews using its API.
 
 ## Parsed data can be downloaded here:
-https://github.com/n1EzeR/russian_reviews_dataset
+https://github.com/zhanymkanov/russian_reviews_dataset
 - Partially cleaned (both row and cleaned versions are available though)
 - ~120k rows
 
@@ -38,7 +38,7 @@ Then, reviews crawler (`spiders/reviews.py`):
 ### Installation steps
 1. Download the project
 ```
-git clone https://github.com/n1EzeR/reviews_parser
+git clone https://github.com/zhanymkanov/reviews_parser
 ```
 2. Go to project directory
 ```
@@ -68,6 +68,3 @@ python reviews_crawler.py
 ```
 
 Although, it is possible to run them all at once, I recommend you to parse reviews one by one (comment/uncomment categories), so that you could check each category integrity
-
-## Further development
-1. Parse the detailed information of each product
