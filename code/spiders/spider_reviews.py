@@ -50,6 +50,18 @@ class ReviewsSpider(scrapy.Spider):
             )
 
 
+class ComputersSpider(ReviewsSpider):
+    name = "computers-reviews"
+    category = "computers"
+    custom_settings = {
+        'LOG_FILE': f'logs/{date.today()}{name}.log'
+    }
+    logging.getLogger().addHandler(logging.StreamHandler())
+
+    def __init__(self):
+        super().__init__(self.category)
+
+
 class BeautySpider(ReviewsSpider):
     name = "beauty-reviews"
     category = "beauty"

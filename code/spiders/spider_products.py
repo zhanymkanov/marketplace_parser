@@ -70,6 +70,19 @@ class SmartphonesSpider(ListSpider):
         super().__init__(self.category_link, stop_if_no_reviews=False)
 
 
+class ComputersSpider(ListSpider):
+    name = 'computers-list'
+    category_link = 'computers'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json'
+    }
+
+    def __init__(self):
+        super().__init__(self.category_link, stop_if_no_reviews=False)
+
+
 class BeautySpider(ListSpider):
     name = 'beauty-list'
     category_link = 'beauty%20care%20equipment'

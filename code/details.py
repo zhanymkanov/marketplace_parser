@@ -5,6 +5,7 @@ from spiders import spider_details
 def start():
     process = CrawlerProcess()
     process.crawl(spider_details.SmartphoneDetailsSpider)
+    process.crawl(spider_details.ComputerDetailsSpider)
     process.start()
 
 

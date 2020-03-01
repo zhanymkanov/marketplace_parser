@@ -68,3 +68,16 @@ class SmartphoneDetailsSpider(DetailsSpider):
 
     def __init__(self):
         super().__init__(self.category)
+
+
+class ComputerDetailsSpider(DetailsSpider):
+    name = 'computers-details'
+    category = 'computers'
+    custom_settings = {
+        'FEED_FORMAT': 'json',
+        'FEED_EXPORT_ENCODING': "utf-8",
+        'FEED_URI': f'../data/products/{date.today()}/{name}.json',
+    }
+
+    def __init__(self):
+        super().__init__(self.category)
