@@ -14,8 +14,6 @@ autoflake = "*"
 scrapy = "*"
 python-decouple = "*"
 psycopg2-binary = "*"
-sqlalchemy = "*"
-databases = "*"
 flake8 = "*"
 pydantic = "*"
 orjson = "*"
@@ -24,7 +22,3 @@ pandas = "*"
 
 [requires]
 python_version = "3.7"
-
-[scripts]
-flake1 = "flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics"
-flake2 = "flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics"
