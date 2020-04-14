@@ -7,9 +7,6 @@ class Category(BaseModel):
     source_id: int
     name: str
 
-    class Config:
-        orm_mode = True
-
 
 class Product(BaseModel):
     source_id: int
@@ -21,9 +18,6 @@ class Product(BaseModel):
     brand: str = None
     rating: float
     reviews_quantity: int
-
-    class Config:
-        orm_mode = True
 
 
 class Specs(BaseModel):
@@ -39,9 +33,6 @@ class Specs(BaseModel):
     battery: str = None
     extra: Json
 
-    class Config:
-        orm_mode = True
-
 
 class Review(BaseModel):
     product_id: int
@@ -53,6 +44,3 @@ class Review(BaseModel):
     comment_text: str = None
     review_approved: int = None
     review_rated: int = None
-
-    class Config:
-        orm_mode = True
