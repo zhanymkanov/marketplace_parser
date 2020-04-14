@@ -20,7 +20,7 @@ class SpecsSpider(scrapy.Spider):
         with open(self.products_json) as products_json:
             products = json.load(products_json)
             for product in products:
-                url = product["shopLink"]
+                url = product["url"]
                 yield scrapy.Request(
                     url=url, cb_kwargs={"product": product}, callback=self.parse_product
                 )

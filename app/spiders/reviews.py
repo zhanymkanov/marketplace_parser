@@ -6,7 +6,7 @@ from datetime import date
 import scrapy
 from decouple import config
 
-from app.constants import HEADER_REVIEWS, PRODUCTS_DIR, REVIEWS_DIR, REVIEWS_PER_REQUEST
+from app.constants import HEADER_REVIEWS, PRODUCTS_DIR, REVIEWS_DIR
 from app.utils import parse_latest_date
 
 
@@ -34,7 +34,7 @@ class ReviewsSpider(scrapy.Spider):
                     callback=self.parse_reviews,
                     cb_kwargs={
                         "product_id": product["id"],
-                        "actual_reviews_quantity": product["reviewsQuantity"],
+                        "actual_reviews_quantity": product["reviews_quantity"],
                     },
                 )
 
