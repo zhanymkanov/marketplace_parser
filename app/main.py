@@ -1,11 +1,6 @@
-import logging
-
 from scrapy.crawler import CrawlerProcess
 
 from app.spiders import products, reviews, specs
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-LOGGER = logging.getLogger(__name__)
 
 
 def start_parse():

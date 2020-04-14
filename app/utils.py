@@ -6,6 +6,7 @@ from typing import Callable
 
 from .exceptions import EmptyDirectoryException
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 LOGGER = logging.getLogger()
 
 

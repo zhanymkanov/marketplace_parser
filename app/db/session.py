@@ -8,6 +8,7 @@ from decouple import config
 
 from app.constants import SQL_DIR
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 LOGGER = logging.getLogger(__name__)
 
 
