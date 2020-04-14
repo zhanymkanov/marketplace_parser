@@ -29,7 +29,7 @@ class ReviewsSpider(scrapy.Spider):
             products = json.load(products_json)
             for product in products:
                 yield scrapy.Request(
-                    url=self.url.format(product["id"], REVIEWS_PER_REQUEST),
+                    url=self.url.format(product["id"], product["reviews_quantity"]),
                     headers=HEADER_REVIEWS,
                     callback=self.parse_reviews,
                     cb_kwargs={
