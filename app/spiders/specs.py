@@ -1,10 +1,10 @@
 import json
-from datetime import date
 
 import scrapy
 from decouple import config
 
-from app.constants import PRODUCTS_DIR
+from app.constants import PRODUCTS_DIR, SPECS_DIR
+from app.db import utils
 from app.utils import parse_latest_date
 
 
@@ -44,26 +44,27 @@ class SpecsSpider(scrapy.Spider):
             details[characteristic] = value
 
         yield {
-            "id": product["id"],
+            "source_id": product["source_id"],
             "title": product["title"],
-            "url": product["shopLink"],
+            "url": product["url"],
             "brand": product["brand"],
-            "rating": product["adjustedRating"],
-            "reviews_quantity": product["reviewsQuantity"],
-            "price": product["unitSalePrice"],
-            "category_id": product["categoryId"],
-            "category_name": product["categoryName"],
+            "rating": product["rating"],
+            "reviews_quantity": product["reviews_quantity"],
+            "price_unit": product["price_unit"],
+            "price_sale": product["price_sale"],
+            "category_id": product["category_id"],
+            "category_name": product["category_name"],
             "parsed_details": details,
         }
 
 
 class SmartphoneSpecsSpider(SpecsSpider):
-    name = "smartphones-details"
+    name = "smartphones-specs"
     category = "smartphones"
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
+        "FEED_URI": f"{SPECS_DIR}/{category}/{name}.json",
     }
 
     def __init__(self):
@@ -71,12 +72,12 @@ class SmartphoneSpecsSpider(SpecsSpider):
 
 
 class ComputerSpecsSpider(SpecsSpider):
-    name = "computers-details"
+    name = "computers-specs"
     category = "computers"
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
+        "FEED_URI": f"{SPECS_DIR}/{category}/{name}.json",
     }
 
     def __init__(self):
