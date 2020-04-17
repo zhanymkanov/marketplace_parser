@@ -3,7 +3,7 @@ from decouple import config
 DB_DUMPS_DIR = "../data/db_dumps"
 PRODUCTS_DIR = "../data/products"
 REVIEWS_DIR = "../data/reviews"
-SPECS_DIR = "../data/details"
+SPECS_DIR = "../data/specs"
 SQL_DIR = "sql"
 
 REVIEWS_PER_REQUEST = 4000
