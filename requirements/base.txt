@@ -1,0 +1,6 @@
+scrapy
+python-decouple
+psycopg2-binary
+pydantic
+orjson
+anosql
