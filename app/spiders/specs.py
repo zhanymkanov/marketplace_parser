@@ -19,11 +19,18 @@ class SpecsSpider(scrapy.Spider):
     def start_requests(self):
         with open(self.products_json) as products_json:
             products = json.load(products_json)
-            for product in products:
-                url = product["url"]
-                yield scrapy.Request(
-                    url=url, cb_kwargs={"product": product}, callback=self.parse_product
-                )
+        parsed_ids = utils.get_dumped_specs_products()
+
+        for product in products:
+            if product["source_id"] in parsed_ids:
+                continue
+
+            yield scrapy.Request(
+                url=product["url"],
+                cb_kwargs={"product": product},
+                callback=self.parse_product,
+            )
+            parsed_ids.add(product["source_id"])
 
     def parse_product(self, response, product):
         """
