@@ -1,8 +1,8 @@
+import json
 import logging
 import os
 import time
 from datetime import date
-from typing import Callable
 
 from .exceptions import EmptyDirectoryException
 
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 LOGGER = logging.getLogger()
 
 
-def perf_logger(func: Callable):
+def perf_logger(func):
     def wrapper(*args, **kwargs):
         LOGGER.info(f"Started {func.__name__}")
         start = time.perf_counter()
@@ -18,6 +18,11 @@ def perf_logger(func: Callable):
         LOGGER.info(f"Finshed {func.__name__} in {time.perf_counter() - start}")
 
     return wrapper
+
+
+def load_json(path):
+    with open(path) as f:
+        return json.load(f)
 
 
 def parse_latest_date(dir):

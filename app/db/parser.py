@@ -9,7 +9,7 @@ from app import utils
 from app.constants import DB_DUMPS_DIR, PRODUCTS_DIR, REVIEWS_DIR, SPECS_DIR
 from app.db import schemas
 from app.db.processing import processed_specs
-from app.utils import perf_logger
+from app.utils import load_json, perf_logger
 
 PRODUCTS_DIR = f"../{PRODUCTS_DIR}"
 REVIEWS_DIR = f"../{REVIEWS_DIR}"
@@ -29,11 +29,10 @@ def parse_categories():
 
     categories_unique = set()
     for category in categories:
-        with open(f"{products_latest}/{category}") as f:
-            products = json.load(f)
-            categories_unique = categories_unique.union(
-                {(p["category_name"], p["category_id"]) for p in products}
-            )
+        products = load_json(f"{products_latest}/{category}")
+        categories_unique = categories_unique.union(
+            {(p["category_name"], p["category_id"]) for p in products}
+        )
     categories_sorted = sorted(categories_unique, key=lambda x: (x[0], x[1]))
     categories_dict = [{"name": c[0], "source_id": c[1]} for c in categories_sorted]
 
@@ -51,9 +50,8 @@ def parse_products():
 
     products = []
     for category in categories:
-        with open(f"{products_latest}/{category}") as f:
-            category_products = json.loads(f.read())
-            products.extend([schemas.Product(**p).dict() for p in category_products])
+        category_products = load_json(f"{products_latest}/{category}")
+        products.extend([schemas.Product(**p).dict() for p in category_products])
 
     with open(f"{DB_DUMPS_DIR}/products.json", "w") as f:
         f.write(json.dumps(products, ensure_ascii=False))
@@ -74,28 +72,28 @@ def parse_reviews():
 
         for product in products:
             product_id = product[: product.index(".json")]
-            with open(f"{reviews_latest}/{category}/{product}") as f:
-                raw_reviews = json.load(f)["data"]
-                for review in raw_reviews:
-                    review_dict = {
-                        "product_id": product_id,
-                        "source_id": review["id"],
-                        "date": datetime.strptime(review["date"], "%d.%m.%Y"),
-                        "rating": review["rating"],
-                        "comment_plus": review["comment"]["plus"],
-                        "comment_minus": review["comment"]["minus"],
-                        "comment_text": review["comment"]["text"],
-                    }
+            product_reviews = load_json(f"{reviews_latest}/{category}/{product}")
 
-                    review_rating = review["feedback"]["reviewsRating"]
-                    if review_rating:
-                        match = re.search("(\d+)\s+из\s+(\d+)", review_rating)
-                        approved, rated = match.groups()
-                        review_dict["review_approved"] = approved
-                        review_dict["review_rated"] = rated
+            for review in product_reviews["data"]:
+                review_dict = {
+                    "product_id": product_id,
+                    "source_id": review["id"],
+                    "date": datetime.strptime(review["date"], "%d.%m.%Y"),
+                    "rating": review["rating"],
+                    "comment_plus": review["comment"]["plus"],
+                    "comment_minus": review["comment"]["minus"],
+                    "comment_text": review["comment"]["text"],
+                }
 
-                    review_db = schemas.Review(**review_dict)
-                    reviews.append(review_db.dict())
+                review_rating = review["feedback"]["reviewsRating"]
+                if review_rating:
+                    match = re.search("(\d+)\s+из\s+(\d+)", review_rating)
+                    approved, rated = match.groups()
+                    review_dict["review_approved"] = approved
+                    review_dict["review_rated"] = rated
+
+                review_db = schemas.Review(**review_dict)
+                reviews.append(review_db.dict())
 
     with open(f"{DB_DUMPS_DIR}/reviews.json", "wb") as f:
         f.write(orjson.dumps(reviews))
@@ -103,13 +101,8 @@ def parse_reviews():
 
 @perf_logger
 def parse_specs():
-    with open(f"{SPECS_DIR}/computers-specs.json") as f:
-        products = json.load(f)
-
-    db_specs = []
-    for product in products:
-        specs = processed_specs(product)
-        db_specs.append(specs)
+    products = load_json(f"{SPECS_DIR}/computers-specs.json")
+    db_specs = [processed_specs(product) for product in products]
 
     with open(f"{DB_DUMPS_DIR}/computers-specs.json", "w") as f:
         json.dump(db_specs, f, ensure_ascii=False)
