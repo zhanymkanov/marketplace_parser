@@ -13,6 +13,7 @@ from app.utils import perf_logger
 
 PRODUCTS_DIR = f"../{PRODUCTS_DIR}"
 REVIEWS_DIR = f"../{REVIEWS_DIR}"
+SPECS_DIR = f"../{SPECS_DIR}"
 
 DB_DUMPS_DIR = f"../{DB_DUMPS_DIR}/{date.today()}"
 os.makedirs(DB_DUMPS_DIR, exist_ok=True)
