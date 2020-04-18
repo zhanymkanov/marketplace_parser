@@ -1,10 +1,7 @@
 import json
 import re
 
-from app.utils import perf_logger
 
-
-@perf_logger
 def processed_specs(product):
     return _parse_product_specs(product)
 
