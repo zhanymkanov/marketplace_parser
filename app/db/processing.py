@@ -1,13 +1,25 @@
 import json
 import re
 
+COMPUTER_TYPES = {
+    'ноутбук', 'игровой ноутбук', 'ультрабук', 'трансформер',
+    'системный блок', 'моноблок',
+}
+
 
 def processed_specs(product):
-    return _parse_product_specs(product)
+    return _parse_computer_specs(product)
 
 
-def _parse_product_specs(product):
+def _parse_computer_specs(product):
     details = _cleaned_dict(product["parsed_details"])
+
+    product_type = details.get("Тип")
+    if product_type not in COMPUTER_TYPES:
+        return
+
+    cpu = details.get("Процессор", '')
+    cpu = cpu.lower()
 
     gpu = details.get("Видеопроцессор", details.get("Видеокарта"))
     gpu = _cleaned_gpu(gpu)
@@ -32,8 +44,8 @@ def _parse_product_specs(product):
 
     return {
         "product_id": product["id"],
-        "type": details.get("Тип"),
-        "cpu": details.get("Процессор"),
+        "type": product_type,
+        "cpu": cpu,
         "hertz": hertz,
         "cores": cores,
         "gpu": gpu,
@@ -41,8 +53,6 @@ def _parse_product_specs(product):
         "ram_type": ram_type,
         "ssd": ssd,
         "drive_size": drive_size,
-        "camera": details.get("Фотокамера"),
-        "battery": details.get("Аккумулятор"),
         "extra": json.dumps(details, ensure_ascii=False),
     }
 

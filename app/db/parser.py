@@ -102,10 +102,15 @@ def parse_reviews():
 @perf_logger
 def parse_specs():
     products = load_json(f"{SPECS_DIR}/computers-specs.json")
-    db_specs = [processed_specs(product) for product in products]
+
+    specs = []
+    for product in products:
+        spec = processed_specs(product)
+        if spec:
+            specs.append(spec)
 
     with open(f"{DB_DUMPS_DIR}/computers-specs.json", "w") as f:
-        json.dump(db_specs, f, ensure_ascii=False)
+        json.dump(specs, f, ensure_ascii=False)
 
 
 if __name__ == "__main__":
