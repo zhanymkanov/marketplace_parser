@@ -31,7 +31,8 @@ def parse_categories():
     for category in categories:
         products = load_json(f"{products_latest}/{category}")
         for product in products:
-            categories_set.add((product["category_name"], product["category_id"]))
+            name = product["category_name"].replace("%20", " ")
+            categories_set.add((name, product["category_id"]))
 
     categories_sorted = sorted(categories_set, key=lambda x: (x[0], x[1]))
     categories_dict = [{"name": c[0], "source_id": c[1]} for c in categories_sorted]
