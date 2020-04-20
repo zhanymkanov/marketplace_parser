@@ -66,11 +66,11 @@ def _cleaned_gpu(gpu: str):
     Clean GPU
 
     GPU:
-        if any russian letter in word, drop the word
+        if any russian letter in the word, drop the word
             - but if ends with "," then add "+"
-        if only english letters in word and ends with ","
-            - then add "+"
+        if only english letters in the word and it ends with ","
             - then add word
+            - then add "+"
     """
     if not gpu:
         return
@@ -94,33 +94,7 @@ def _cleaned_gpu(gpu: str):
 
         result.append(word)
 
-    return " ".join(result).strip("+").strip()
-
-
-def _extract_cores(raw_cores: str):
-    """
-    Extract cores number
-
-    raw_cores:
-        - 2-х ядерный 2.4 ГГц
-        - 4-х ядерный, 1.6 ГГц
-        - 1600 МГц, 4 ядра
-        - 2000 MHz, 4 ядра
-        - 8 ядер
-        - 4 ядра
-    """
-    if not raw_cores:
-        return
-
-    patterns = (
-        r"(\d+)-х ядерный",
-        r"(\d) ядра",
-        r"(\d) ядер",
-    )
-    for pattern in patterns:
-        match = re.search(pattern, raw_cores)
-        if match:
-            return match.group(1)
+    return " ".join(result).strip("+").strip().lower()
 
 
 def _extract_hertz(raw_hertz: str):
