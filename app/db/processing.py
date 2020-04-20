@@ -2,8 +2,12 @@ import json
 import re
 
 COMPUTER_TYPES = {
-    'ноутбук', 'игровой ноутбук', 'ультрабук', 'трансформер',
-    'системный блок', 'моноблок',
+    "ноутбук",
+    "игровой ноутбук",
+    "ультрабук",
+    "трансформер",
+    "системный блок",
+    "моноблок",
 }
 
 
@@ -18,7 +22,7 @@ def _parse_computer_specs(product):
     if product_type not in COMPUTER_TYPES:
         return
 
-    cpu = details.get("Процессор", '')
+    cpu = details.get("Процессор", "")
     cpu = cpu.lower()
 
     gpu = details.get("Видеопроцессор", details.get("Видеокарта"))
