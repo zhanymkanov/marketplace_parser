@@ -38,8 +38,6 @@ create table if not exists specs
     ram_type   text,
     ssd        text,
     drive_size text,
-    camera     text,
-    battery    text,
     extra      jsonb,
     created_at date default current_date
 );
