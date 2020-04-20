@@ -31,13 +31,13 @@ create table if not exists specs
     product_id bigint,
     type       text,
     cpu        text,
-    hertz      text,
-    cores      text,
+    hertz      smallint,
+    cores      smallint,
     gpu        text,
-    ram        text,
+    ram        smallint,
     ram_type   text,
-    ssd        text,
-    drive_size text,
+    ssd        bool,
+    drive_size smallint,
     extra      jsonb,
     created_at date default current_date
 );

@@ -1,25 +1,33 @@
 -- name: bulk-insert-categories
+begin;
 insert into category(name, source_id)
-VALUES %s;
+VALUES (:name, :source_id);
+commit;
 
 -- name: bulk-insert-products
+begin;
 insert into product(source_id, category_id, title,
                     price_unit, price_sale, url,
                     brand, rating, reviews_quantity)
-VALUES (:source_id, :category_id, :title,
+values (:source_id, :category_id, :title,
         :price_unit, :price_sale, :url,
         :brand, :rating, :reviews_quantity);
+commit;
 
 -- name: bulk-insert-reviews
+begin;
 insert into review(source_id, product_id, date,
                    rating, comment_plus, comment_minus,
                    comment_text, review_approved, review_rated)
-VALUES (:source_id, :product_id, :date,
+values (:source_id, :product_id, :date,
         :rating, :comment_plus, :comment_minus,
         :comment_text, :review_approved, :review_rated);
+commit;
 
 -- name: bulk-insert-specs
+begin;
 insert into specs(product_id, type, cpu, hertz, cores, gpu, ram,
-                  ssd, drive_size, camera, battery, extra)
-VALUES (:product_id, :type, :cpu, :hertz, :cores, :gpu, :ram,
-        :ssd, :drive_size, :camera, :battery, :extra);
+                  ssd, drive_size, extra)
+values (:product_id, :type, :cpu, :hertz, :cores, :gpu, :ram,
+        :ssd, :drive_size, :extra);
+commit;
