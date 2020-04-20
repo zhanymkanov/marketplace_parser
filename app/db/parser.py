@@ -27,13 +27,13 @@ def parse_categories():
     categories = os.listdir(products_latest)
     categories = [c for c in categories if not c.startswith(".")]
 
-    categories_unique = set()
+    categories_set = set()
     for category in categories:
         products = load_json(f"{products_latest}/{category}")
-        categories_unique = categories_unique.union(
-            {(p["category_name"], p["category_id"]) for p in products}
-        )
-    categories_sorted = sorted(categories_unique, key=lambda x: (x[0], x[1]))
+        for product in products:
+            categories_set.add((product["category_name"], product["category_id"]))
+
+    categories_sorted = sorted(categories_set, key=lambda x: (x[0], x[1]))
     categories_dict = [{"name": c[0], "source_id": c[1]} for c in categories_sorted]
 
     with open(f"{DB_DUMPS_DIR}/categories.json", "w") as f:

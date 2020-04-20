@@ -132,6 +132,32 @@ def _extract_hertz(raw_hertz: str):
             return int(hertz)
 
 
+def _extract_cores(raw_cores: str):
+    """
+    Extract cores number
+
+    raw_cores:
+        - 2-х ядерный 2.4 ГГц
+        - 4-х ядерный, 1.6 ГГц
+        - 1600 МГц, 4 ядра
+        - 2000 MHz, 4 ядра
+        - 8 ядер
+        - 4 ядра
+    """
+    if not raw_cores:
+        return
+
+    patterns = (
+        r"(\d+)-х ядерный",
+        r"(\d) ядра",
+        r"(\d) ядер",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, raw_cores)
+        if match:
+            return match.group(1)
+
+
 def _extract_ram_size(raw_ram: str):
     """
     Extract RAM size
