@@ -90,11 +90,15 @@ class LocalSession(Base):
 
     @property
     def insert_queries(self):
-        return anosql.from_path(f"{SQL_DIR}/bulk_insert.sql", "psycopg2")
+        return anosql.from_path(f"{SQL_DIR}/insert_values.sql", "psycopg2")
 
     @property
-    def index_queries(self):
-        return anosql.from_path(f"{SQL_DIR}/indexes.sql", "psycopg2")
+    def create_index_queries(self):
+        return anosql.from_path(f"{SQL_DIR}/create_indexes.sql", "psycopg2")
+
+    @property
+    def drop_index_queries(self):
+        return anosql.from_path(f"{SQL_DIR}/drop_indexes.sql", "psycopg2")
 
     def exec_query(self, query):
         self._exec_query(query)

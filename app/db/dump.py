@@ -62,6 +62,41 @@ def _copy_rating_from_files(files, columns):
             db.copy_from(f, "gpu_rating", columns)
 
 
+def create_indexes():
+    db = LocalSession()
+    queries = db.create_index_queries
+
+    queries = (
+        queries.create_category_indexes,
+        queries.create_product_indexes,
+        queries.create_review_indexes,
+        queries.create_specs_indexes,
+        queries.create_cpu_rating_indexes,
+        queries.create_gpu_rating_indexes,
+    )
+
+    for query in queries:
+        db.exec_query(query.sql)
+
+
+def drop_indexes():
+    db = LocalSession()
+    queries = db.drop_index_queries
+    queries = (
+        queries.drop_category_indexes,
+        queries.drop_product_indexes,
+        queries.drop_review_indexes,
+        queries.drop_specs_indexes,
+        queries.drop_cpu_rating_indexes,
+        queries.drop_gpu_rating_indexes,
+    )
+
+    for query in queries:
+        db.exec_query(query.sql)
+
+
 if __name__ == "__main__":
+    drop_indexes()
     dump_into_tables()
     dump_ratings_into_tables()
+    create_indexes()
