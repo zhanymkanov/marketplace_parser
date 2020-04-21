@@ -100,6 +100,10 @@ class LocalSession(Base):
     def drop_index_queries(self):
         return anosql.from_path(f"{SQL_DIR}/drop_indexes.sql", "psycopg2")
 
+    @property
+    def drop_duplicates_queries(self):
+        return anosql.from_path(f"{SQL_DIR}/drop_duplicates.sql", "psycopg2")
+
     def exec_query(self, query):
         self._exec_query(query)
 

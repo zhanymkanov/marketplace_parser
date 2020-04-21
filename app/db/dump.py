@@ -95,8 +95,24 @@ def drop_indexes():
         db.exec_query(query.sql)
 
 
+def drop_duplicates():
+    db = LocalSession()
+    queries = db.drop_duplicates_queries
+    queries = (
+        queries.drop_product_duplicates,
+        queries.drop_review_duplicates,
+        queries.drop_category_duplicates,
+        queries.drop_cpu_rating_duplicates,
+        queries.drop_gpu_rating_duplicates,
+    )
+
+    for query in queries:
+        db.exec_query(query.sql)
+
+
 if __name__ == "__main__":
     drop_indexes()
     dump_into_tables()
     dump_ratings_into_tables()
+    drop_duplicates()
     create_indexes()
