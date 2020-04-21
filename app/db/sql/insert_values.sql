@@ -26,8 +26,8 @@ commit;
 
 -- name: bulk-insert-specs
 begin;
-insert into specs(product_id, type, cpu, hertz, cores, gpu, ram,
+insert into specs(product_id, type, cpu, hertz, cores, gpu, ram, ram_type,
                   ssd, drive_size, extra)
-values (:product_id, :type, :cpu, :hertz, :cores, :gpu, :ram,
+values (:product_id, :type, :cpu, :hertz, :cores, :gpu, :ram, :ram_type,
         :ssd, :drive_size, :extra);
 commit;
