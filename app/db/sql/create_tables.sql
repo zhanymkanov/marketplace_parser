@@ -57,3 +57,21 @@ create table if not exists review
     review_rated    text,
     created_at      date default current_date
 );
+
+-- name: create-gpu-rating
+create table if not exists gpu_rating
+(
+    id     serial primary key,
+    gpu    text,
+    rate   float4,
+    versus text
+);
+
+-- name: create-cpu-rating
+create table if not exists cpu_rating
+(
+    id     serial primary key,
+    cpu    text,
+    rate   float4,
+    versus text
+);
