@@ -79,6 +79,8 @@ class LocalSession(Base):
             queries.create_product.sql,
             queries.create_specs.sql,
             queries.create_review.sql,
+            queries.create_gpu_rating.sql,
+            queries.create_cpu_rating.sql,
         ]
 
         for query in queries:
