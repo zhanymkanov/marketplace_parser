@@ -3,10 +3,6 @@ alter table category
     add constraint category_source_id
         unique (source_id);
 
--- name: drop-category-indexes
-alter table category
-    drop constraint category_source_id;
-
 -- name: create-product-indexes
 BEGIN;
 alter table product
@@ -30,24 +26,6 @@ alter table product
             on delete set null;
 COMMIT;
 
--- name: drop-product-indexes
-BEGIN;
-
-alter table product
-    drop constraint product_source_id;
-
-alter table product
-    drop constraint product_url;
-
-alter table product
-    drop constraint product_category_fk_source_id;
-
-alter table product
-    drop constraint product_specs_fk_id;
-
-COMMIT;
-
-
 -- name: create-specs-indexes
 BEGIN;
 
@@ -62,18 +40,6 @@ alter table specs
             on delete cascade;
 
 COMMIT;
-
--- name: drop-specs-indexes
-BEGIN;
-
-alter table specs
-    drop constraint specs_product_id;
-
-alter table specs
-    drop constraint specs_product_fk_source_id;
-
-COMMIT;
-
 
 -- name: create-review-indexes
 BEGIN;
@@ -90,13 +56,20 @@ alter table review
 
 COMMIT;
 
--- name: drop-review-indexes
+-- name: create-cpu-rating-indexes
 BEGIN;
 
-alter table review
-    drop constraint review_source_id;
+alter table cpu_rating
+    add constraint cpu_rating_unique
+        unique (cpu);
 
-alter table review
-    drop constraint review_product_fk_source_id;
+COMMIT;
+
+-- name: create-gpu-rating-indexes
+BEGIN;
+
+alter table gpu_rating
+    add constraint gpu_rating_unique
+        unique (gpu);
 
 COMMIT;

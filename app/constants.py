@@ -5,6 +5,7 @@ PRODUCTS_DIR = "../data/products"
 REVIEWS_DIR = "../data/reviews"
 SPECS_DIR = "../data/specs"
 SQL_DIR = "sql"
+RATINGS_DIR = '../data/ratings'
 
 REVIEWS_PER_REQUEST = 4000
 
