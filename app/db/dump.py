@@ -1,20 +1,27 @@
-import json
 import logging
 from typing import List
 
 from app import utils
-from app.constants import DB_DUMPS_DIR
+from app.constants import DB_DUMPS_DIR, RATINGS_DIR
 from app.db.session import LocalSession
-from app.utils import perf_logger
+from app.utils import load_json, perf_logger
 
 LOGGER = logging.getLogger(__name__)
+
+DB_DUMPS_DIR = f"../{DB_DUMPS_DIR}"
+RATINGS_DIR = f"../{RATINGS_DIR}"
 
 
 def dump_into_tables():
     db = LocalSession()
     queries = db.insert_queries
 
-    source_files = ("categories.json", "products.json", "reviews.json", "specs.json")
+    source_files = (
+        "categories.json",
+        "products.json",
+        "reviews.json",
+        "computers-specs.json",
+    )
     queries = (
         queries.bulk_insert_categories.sql,
         queries.bulk_insert_products.sql,
@@ -23,15 +30,38 @@ def dump_into_tables():
     )
 
     for source_file, query in zip(source_files, queries):
-        insert_from_source(source_file, query)
+        _insert_from_source(source_file, query)
+
+
+def dump_ratings_into_tables():
+    cpu_columns = ("cpu", "rate", "versus")
+    cpu_rating_files = ("laptop_cpus_versus.csv", "pc_cpus_versus.csv")
+
+    gpu_columns = ("gpu", "rate", "versus")
+    gpu_rating_files = ("laptop_gpus_versus.csv", "pc_gpus_versus.csv")
+
+    _copy_rating_from_files(cpu_rating_files, cpu_columns)
+    _copy_rating_from_files(gpu_rating_files, gpu_columns)
 
 
 @perf_logger
-def insert_from_source(source_file, query):
+def _insert_from_source(source_file, query):
     db = LocalSession()
     date = utils.parse_latest_date(DB_DUMPS_DIR)
 
-    with open(f"{DB_DUMPS_DIR}/{date}/{source_file}") as f:
-        data: List[dict] = json.load(f)
+    data: List[dict] = load_json(f"{DB_DUMPS_DIR}/{date}/{source_file}")
+    db.bulk_insert_dicts(query, data)
 
-    db.bulk_insert_dicts(data, query)
+
+@perf_logger
+def _copy_rating_from_files(files, columns):
+    db = LocalSession()
+
+    for file in files:
+        with open(f"{RATINGS_DIR}/{file}") as f:
+            db.copy_from(f, "gpu_rating", columns)
+
+
+if __name__ == "__main__":
+    dump_into_tables()
+    dump_ratings_into_tables()

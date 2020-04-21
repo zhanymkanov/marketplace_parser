@@ -58,6 +58,14 @@ class Base:
         except psycopg2.Error as exc:
             LOGGER.error(exc)
 
+    def _copy_from(self, file, table, columns, sep=","):
+        try:
+            with self.conn as c:
+                cur = c.cursor()
+                cur.copy_from(file, table, sep=sep, columns=columns)
+        except psycopg2.Error as exc:
+            LOGGER.error(exc)
+
 
 class LocalSession(Base):
     def __init__(self):
@@ -102,3 +110,6 @@ class LocalSession(Base):
 
     def bulk_insert_dicts(self, query, data: List[dict]):
         self._exec_with_dicts(query, data)
+
+    def copy_from(self, file, table, columns, sep=","):
+        self._copy_from(file, table, columns, sep)
