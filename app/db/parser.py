@@ -51,7 +51,7 @@ def parse_products():
     products = []
     for category in categories:
         category_products = load_json(f"{products_latest}/{category}")
-        products.extend([p for p in category_products])
+        products.extend(category_products)
 
     with open(f"{DB_DUMPS_DIR}/products.json", "w") as f:
         f.write(json.dumps(products, ensure_ascii=False))

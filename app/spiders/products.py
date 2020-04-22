@@ -5,7 +5,7 @@ from datetime import date
 import scrapy
 from decouple import config
 
-from app.constants import HEADER_DEFAULT
+from app.constants import HEADER_DEFAULT, SPECS_DIR, PRODUCTS_DIR
 
 
 class ListSpider(scrapy.Spider):
@@ -66,7 +66,7 @@ class SmartphonesSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -79,7 +79,7 @@ class NotebooksSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{SPECS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -92,7 +92,7 @@ class DesktopsSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{SPECS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -105,7 +105,7 @@ class ComputersSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -118,7 +118,7 @@ class BeautySpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -131,7 +131,7 @@ class PerfumeSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -144,7 +144,7 @@ class BooksSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -157,7 +157,7 @@ class CarAudioSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -170,7 +170,7 @@ class CarElectronicsSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -183,7 +183,7 @@ class HeadphonesSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -196,7 +196,7 @@ class BigHomeAppliancesSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -209,7 +209,7 @@ class SmallHomeAppliancesSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -222,7 +222,7 @@ class ClimateEquipmentSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -235,7 +235,7 @@ class KitchenAppliancesSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -248,7 +248,7 @@ class MemoryCardsSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -261,7 +261,7 @@ class PortableSpeakersSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -274,7 +274,7 @@ class PowerBanksSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -287,7 +287,7 @@ class TiresSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -300,7 +300,7 @@ class WatchesSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -313,7 +313,7 @@ class WearablesSpider(ListSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"../data/products/{date.today()}/{name}.json",
+        "FEED_URI": f"{PRODUCTS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):

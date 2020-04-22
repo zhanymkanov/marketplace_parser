@@ -3,7 +3,7 @@ from datetime import date
 import scrapy
 from decouple import config
 
-from app.constants import PRODUCTS_DIR, SPECS_DIR
+from app.constants import SPECS_DIR
 from app.db import utils as db_utils
 from app.utils import load_json, parse_latest_date
 
@@ -13,8 +13,8 @@ class SpecsSpider(scrapy.Spider):
 
     def __init__(self, category):
         super().__init__()
-        parse_date = parse_latest_date(PRODUCTS_DIR)
-        self.products_json = f"{PRODUCTS_DIR}/{parse_date}/{category}-list.json"
+        parse_date = parse_latest_date(SPECS_DIR)
+        self.products_json = f"{SPECS_DIR}/{parse_date}/{category}-list.json"
 
     def start_requests(self):
         parsed_ids = db_utils.get_dumped_product_details()
