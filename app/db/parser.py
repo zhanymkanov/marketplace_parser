@@ -7,7 +7,6 @@ import orjson
 
 from app import utils
 from app.constants import DB_DUMPS_DIR, PRODUCTS_DIR, REVIEWS_DIR, SPECS_DIR
-from app.db import schemas
 from app.db.processing import processed_specs
 from app.utils import load_json, perf_logger
 
@@ -52,7 +51,7 @@ def parse_products():
     products = []
     for category in categories:
         category_products = load_json(f"{products_latest}/{category}")
-        products.extend([schemas.Product(**p).dict() for p in category_products])
+        products.extend([p for p in category_products])
 
     with open(f"{DB_DUMPS_DIR}/products.json", "w") as f:
         f.write(json.dumps(products, ensure_ascii=False))
@@ -134,6 +133,5 @@ def parse_specs():
 if __name__ == "__main__":
     parse_categories()
     parse_products()
-    parse_product_details()
     parse_reviews()
     parse_specs()
