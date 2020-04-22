@@ -77,7 +77,6 @@ class LocalSession(Base):
         queries = [
             queries.create_category.sql,
             queries.create_product.sql,
-            queries.create_product_details.sql,
             queries.create_specs.sql,
             queries.create_review.sql,
             queries.create_gpu_rating.sql,
@@ -107,14 +106,14 @@ class LocalSession(Base):
     def drop_duplicates_queries(self):
         return anosql.from_path(f"{SQL_DIR}/drop_duplicates.sql", "psycopg2")
 
-    def exec_query(self, query):
-        self._exec_query(query)
-
     def select_one(self, query):
         return self._fetch_one(query)
 
     def select_all(self, query):
         return self._fetch_all(query)
+
+    def exec_query(self, query):
+        self._exec_query(query)
 
     def bulk_insert_tuples(self, query, data: List):
         self._exec_with_tuples(query, data)
