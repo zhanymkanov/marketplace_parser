@@ -77,6 +77,7 @@ class LocalSession(Base):
         queries = [
             queries.create_category.sql,
             queries.create_product.sql,
+            queries.create_product_details.sql,
             queries.create_specs.sql,
             queries.create_review.sql,
             queries.create_gpu_rating.sql,
