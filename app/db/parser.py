@@ -85,15 +85,17 @@ def parse_reviews():
                     "comment_text": review["comment"]["text"],
                 }
 
+                approved = rated = None
                 review_rating = review["feedback"]["reviewsRating"]
+
                 if review_rating:
                     match = re.search("(\d+)\s+из\s+(\d+)", review_rating)
                     approved, rated = match.groups()
-                    review_dict["review_approved"] = approved
-                    review_dict["review_rated"] = rated
 
-                review_db = schemas.Review(**review_dict)
-                reviews.append(review_db.dict())
+                review_dict["review_approved"] = approved
+                review_dict["review_rated"] = rated
+
+                reviews.append(review_dict)
 
     with open(f"{DB_DUMPS_DIR}/reviews.json", "wb") as f:
         f.write(orjson.dumps(reviews))
