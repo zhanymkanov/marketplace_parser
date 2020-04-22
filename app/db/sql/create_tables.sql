@@ -24,14 +24,6 @@ create table if not exists product
     created_at       date default current_date
 );
 
--- name: create-product-details
-create table if not exists product_details
-(
-    id         serial primary key,
-    product_id bigint,
-    details    jsonb
-);
-
 
 -- name: create-specs
 create table if not exists specs
@@ -47,6 +39,7 @@ create table if not exists specs
     ram_type   text,
     ssd        bool,
     drive_size smallint,
+    extra      jsonb,
     created_at date default current_date
 );
 
