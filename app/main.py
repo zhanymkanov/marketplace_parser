@@ -6,13 +6,16 @@ from app.spiders import products, reviews, specs
 def start_parse():
     start_products()
     start_reviews()
-    start_details()
+    start_specs()
 
 
-def start_details():
+def start_specs():
     process = CrawlerProcess()
+    process.crawl(products.NotebooksSpider)
+    process.crawl(products.DesktopsSpider)
+    process.crawl(specs.NotebooksSpecsSpider)
+    process.crawl(specs.DesktopsSpecsSpider)
     process.crawl(specs.SmartphoneSpecsSpider)
-    process.crawl(specs.ComputerSpecsSpider)
     process.start()
 
 
