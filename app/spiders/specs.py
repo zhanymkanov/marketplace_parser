@@ -77,9 +77,22 @@ class SmartphoneSpecsSpider(SpecsSpider):
         super().__init__(self.category)
 
 
-class ComputerSpecsSpider(SpecsSpider):
-    name = "computers-specs"
-    category = "computers"
+class NotebooksSpecsSpider(SpecsSpider):
+    name = "notebooks-specs"
+    category = "notebooks"
+    custom_settings = {
+        "FEED_FORMAT": "json",
+        "FEED_EXPORT_ENCODING": "utf-8",
+        "FEED_URI": f"{SPECS_DIR}/{date.today()}/{name}.json",
+    }
+
+    def __init__(self):
+        super().__init__(self.category)
+
+
+class DesktopsSpecsSpider(SpecsSpider):
+    name = "desktops-specs"
+    category = "desktops"
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
