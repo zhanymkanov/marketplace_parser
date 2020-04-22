@@ -7,7 +7,7 @@ def get_dumped_products():
     return {x[0] for x in fetch_all}
 
 
-def get_dumped_specs_products():
+def get_dumped_product_details():
     db_session = LocalSession()
-    fetch_all = db_session.select_all("SELECT product_id FROM specs")
+    fetch_all = db_session.select_all("SELECT product_id FROM product_details")
     return {x[0] for x in fetch_all}

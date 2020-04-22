@@ -1,8 +1,10 @@
+from datetime import date
+
 import scrapy
 from decouple import config
 
 from app.constants import PRODUCTS_DIR, SPECS_DIR
-from app.db import utils
+from app.db import utils as db_utils
 from app.utils import load_json, parse_latest_date
 
 
@@ -15,7 +17,7 @@ class SpecsSpider(scrapy.Spider):
         self.products_json = f"{PRODUCTS_DIR}/{parse_date}/{category}-list.json"
 
     def start_requests(self):
-        parsed_ids = utils.get_dumped_specs_products()
+        parsed_ids = db_utils.get_dumped_product_details()
         products = load_json(self.products_json)
 
         for product in products:
@@ -68,7 +70,7 @@ class SmartphoneSpecsSpider(SpecsSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"{SPECS_DIR}/{category}/{name}.json",
+        "FEED_URI": f"{SPECS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
@@ -81,7 +83,7 @@ class ComputerSpecsSpider(SpecsSpider):
     custom_settings = {
         "FEED_FORMAT": "json",
         "FEED_EXPORT_ENCODING": "utf-8",
-        "FEED_URI": f"{SPECS_DIR}/{category}/{name}.json",
+        "FEED_URI": f"{SPECS_DIR}/{date.today()}/{name}.json",
     }
 
     def __init__(self):
