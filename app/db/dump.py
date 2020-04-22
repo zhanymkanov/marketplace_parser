@@ -49,26 +49,8 @@ def dump_ratings_into_tables():
     gpu_columns = ("gpu", "rate", "versus")
     gpu_rating_files = ("laptop_gpus_versus.csv", "pc_gpus_versus.csv")
 
-    _copy_rating_from_files(cpu_rating_files, cpu_columns)
-    _copy_rating_from_files(gpu_rating_files, gpu_columns)
-
-
-@perf_logger
-def _insert_from_source(source_file, query):
-    db = LocalSession()
-    date = utils.parse_latest_date(DB_DUMPS_DIR)
-
-    data: List[dict] = load_json(f"{DB_DUMPS_DIR}/{date}/{source_file}")
-    db.bulk_insert_dicts(query, data)
-
-
-@perf_logger
-def _copy_rating_from_files(files, columns):
-    db = LocalSession()
-
-    for file in files:
-        with open(f"{RATINGS_DIR}/{file}") as f:
-            db.copy_from(f, "gpu_rating", columns)
+    _copy_rating_from_files(cpu_rating_files, 'cpu_rating', cpu_columns)
+    _copy_rating_from_files(gpu_rating_files, "gpu_rating", gpu_columns)
 
 
 def create_indexes():
@@ -119,10 +101,27 @@ def drop_duplicates():
         db.exec_query(query.sql)
 
 
+@perf_logger
+def _insert_from_source(source_file, query):
+    db = LocalSession()
+    date = utils.parse_latest_date(DB_DUMPS_DIR)
+
+    data: List[dict] = load_json(f"{DB_DUMPS_DIR}/{date}/{source_file}")
+    db.bulk_insert_dicts(query, data)
+
+
+@perf_logger
+def _copy_rating_from_files(files, table, columns):
+    db = LocalSession()
+
+    for file in files:
+        with open(f"{RATINGS_DIR}/{file}") as f:
+            db.copy_from(f, table, columns)
+
+
 if __name__ == "__main__":
     drop_indexes()
     dump_into_tables()
-    dump_into_product_details()
     dump_ratings_into_tables()
     drop_duplicates()
     create_indexes()
