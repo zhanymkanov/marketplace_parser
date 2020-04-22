@@ -33,6 +33,15 @@ def dump_into_tables():
         _insert_from_source(source_file, query)
 
 
+def dump_into_product_details():
+    db = LocalSession()
+
+    queries = db.insert_queries
+    query = queries.bulk_insert_product_details
+
+    _insert_from_source('product_details.json', query.sql)
+
+
 def dump_ratings_into_tables():
     cpu_columns = ("cpu", "rate", "versus")
     cpu_rating_files = ("laptop_cpus_versus.csv", "pc_cpus_versus.csv")
@@ -113,6 +122,7 @@ def drop_duplicates():
 if __name__ == "__main__":
     drop_indexes()
     dump_into_tables()
+    dump_into_product_details()
     dump_ratings_into_tables()
     drop_duplicates()
     create_indexes()
