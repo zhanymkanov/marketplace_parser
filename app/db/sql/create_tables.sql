@@ -20,7 +20,6 @@ create table if not exists product
     brand            text,
     rating           smallint,
     reviews_quantity int,
-    specs_id         int,
     created_at       date default current_date
 );
 

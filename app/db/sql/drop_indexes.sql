@@ -14,9 +14,6 @@ alter table product
 alter table product
     drop constraint product_category_fk_source_id;
 
-alter table product
-    drop constraint product_specs_fk_id;
-
 COMMIT;
 
 

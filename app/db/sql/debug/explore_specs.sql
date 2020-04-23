@@ -1,15 +1,3 @@
--- Product specs without type, but with GPU
-select *
-from specs
-where type is null
-  and gpu is not null;
-
--- Product specs without type, but with CPU
-select *
-from specs
-where type is null
-  and cpu is not null;
-
 -- Product without type, but with CPU
 select *
 from product

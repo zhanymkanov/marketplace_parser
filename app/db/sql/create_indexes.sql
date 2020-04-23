@@ -18,12 +18,6 @@ alter table product
         foreign key (category_id)
             references category (source_id)
             on delete set null;
-
-alter table product
-    add constraint product_specs_fk_id
-        foreign key (specs_id)
-            references specs (id)
-            on delete set null;
 COMMIT;
 
 -- name: create-specs-indexes

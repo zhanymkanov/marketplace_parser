@@ -14,12 +14,6 @@ values (:source_id, :category_id, :title,
         :brand, :rating, :reviews_quantity);
 commit;
 
--- name: bulk-insert-product-details
-begin;
-insert into product_details(product_id, details)
-values (:product_id, :details);
-commit;
-
 -- name: bulk-insert-reviews
 begin;
 insert into review(source_id, product_id, date,
