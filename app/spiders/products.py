@@ -5,7 +5,7 @@ from datetime import date
 import scrapy
 from decouple import config
 
-from app.constants import HEADER_DEFAULT, SPECS_DIR, PRODUCTS_DIR
+from app.constants import HEADER_DEFAULT, PRODUCTS_DIR, SPECS_DIR
 
 
 class ListSpider(scrapy.Spider):
