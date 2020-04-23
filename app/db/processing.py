@@ -1,15 +1,6 @@
 import json
 import re
 
-COMPUTER_TYPES = {
-    "ноутбук",
-    "игровой ноутбук",
-    "ультрабук",
-    "трансформер",
-    "системный блок",
-    "моноблок",
-}
-
 
 def processed_specs(product):
     return _parse_computer_specs(product)
@@ -17,10 +8,6 @@ def processed_specs(product):
 
 def _parse_computer_specs(product):
     details = _cleaned_dict(product["parsed_details"])
-
-    product_type = details.get("Тип")
-    if product_type not in COMPUTER_TYPES:
-        return
 
     cpu = details.get("Процессор", "")
     cpu = cpu.lower()
@@ -47,8 +34,8 @@ def _parse_computer_specs(product):
     drive_size = _extract_drive_size(drive_size)
 
     return {
-        "product_id": product["id"],
-        "type": product_type,
+        "product_id": product["source_id"],
+        "type": details.get("Тип"),
         "cpu": cpu,
         "hertz": hertz,
         "cores": cores,

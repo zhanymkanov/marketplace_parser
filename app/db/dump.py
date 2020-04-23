@@ -20,7 +20,7 @@ def dump_into_tables():
         "categories.json",
         "products.json",
         "reviews.json",
-        "computers-specs.json",
+        "specs.json",
     )
     queries = (
         queries.bulk_insert_categories.sql,
@@ -28,7 +28,6 @@ def dump_into_tables():
         queries.bulk_insert_reviews.sql,
         queries.bulk_insert_specs.sql,
     )
-
     for source_file, query in zip(source_files, queries):
         _insert_from_source(source_file, query)
 
@@ -39,7 +38,7 @@ def dump_into_product_details():
     queries = db.insert_queries
     query = queries.bulk_insert_product_details
 
-    _insert_from_source('product_details.json', query.sql)
+    _insert_from_source("product_details.json", query.sql)
 
 
 def dump_ratings_into_tables():
@@ -49,7 +48,7 @@ def dump_ratings_into_tables():
     gpu_columns = ("gpu", "rate", "versus")
     gpu_rating_files = ("laptop_gpus_versus.csv", "pc_gpus_versus.csv")
 
-    _copy_rating_from_files(cpu_rating_files, 'cpu_rating', cpu_columns)
+    _copy_rating_from_files(cpu_rating_files, "cpu_rating", cpu_columns)
     _copy_rating_from_files(gpu_rating_files, "gpu_rating", gpu_columns)
 
 

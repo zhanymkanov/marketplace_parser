@@ -102,33 +102,22 @@ def parse_reviews():
 
 
 @perf_logger
-def parse_product_details():
-    date_latest = utils.parse_latest_date(SPECS_DIR)
-    products = load_json(f"{SPECS_DIR}/{date_latest}/computers-specs.json")
-
-    product_details = []
-    for product in products:
-        product_details.append({
-            'product_id': product['source_id'],
-            'details': json.dumps(product['parsed_details'], ensure_ascii=False)
-        })
-
-    with open(f"{DB_DUMPS_DIR}/product_details.json", "w") as f:
-        json.dump(product_details, f, ensure_ascii=False)
-
-
-@perf_logger
 def parse_specs():
     date_latest = utils.parse_latest_date(SPECS_DIR)
-    products = load_json(f"{SPECS_DIR}/{date_latest}/computers-specs.json")
+    categories_with_specs = (
+        "desktops",
+        "notebooks",
+    )
 
     specs = []
-    for product in products:
-        spec = processed_specs(product)
-        if spec:
+    for category in categories_with_specs:
+        products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-specs.json")
+
+        for product in products:
+            spec = processed_specs(product)
             specs.append(spec)
 
-    with open(f"{DB_DUMPS_DIR}/computers-specs.json", "w") as f:
+    with open(f"{DB_DUMPS_DIR}/specs.json", "w") as f:
         json.dump(specs, f, ensure_ascii=False)
 
 
