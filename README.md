@@ -1,24 +1,16 @@
 # About
-The project helps to parse the largest Kazakhstani marketplace: products and reviews using its API.
+The project helps to parse the largest Kazakhstani marketplace: products and reviews using site API.
 
 ## Parsed data can be downloaded here:
 https://github.com/zhanymkanov/russian_reviews_dataset
 - Partially cleaned (both raw and cleaned versions are available though)
-- ~120k rows
+- ~150k rows
 
 # How it works
 ## Parser steps
-Products crawler (`spiders/products.py`) saves data by category in JSON files with products information such as:
-1. ID
-2. Shop link
-3. Price
-4. Number of reviews
-5. Category
-
-Then, reviews crawler (`spiders/reviews.py`):
-1. Walks through these JSON files
-2. Makes a GET request to an API using product's ID and category for receiving .json list of its reviews
-3. Crawler saves the data separating it by category folders, whereas each product has its JSON file with all downloaded reviews.
+1. Crawl products JSON lists
+2. Crawl reviews based on products list
+3. Crawl laptops, PCs, smartphones specs based on products list
 
 ### Comment on API access
 <i>
@@ -26,45 +18,36 @@ Then, reviews crawler (`spiders/reviews.py`):
 
   I had to do some stuff with my outgoing traffic to find out its endpoints. 
 
-  Therefore, I think it is not tethical to put it online.
+  Therefore, I think it is not tethical to put it online, but to say that is easy to get them
 </i>
 
 ## Installation
 ### Prerequisites
 1. Python 3.6+
 2. pip
-3. pipenv (`pip install pipenv`)
+
+### Dependencies
+1. scrapy
+2. pydantic
+3. python-decouple
+4. orjson
+5. psycopg2-binary
+6. anosql
 
 ### Installation steps
 1. Download the project
 ```
 git clone https://github.com/zhanymkanov/reviews_parser
 ```
-2. Go to project directory
+2. Install the packages
 ```
-cd reviews_parser
-```
-3. Install the packages and virtual environment
-```
-pipenv install
+pip install -r requirements/base.txt
 ```
 
 ## Parser usage
-```
-pipenv shell
-cd code
-```
-Run the products crawler to scrap information about all products among chosen (uncommented) categories in `products_crawler.py`.
+To run the app you need to know API endpoints, which is currently not available to be shared, but discovered by yourselves.
+If you have them, modify the main.py so that you parse only required categories.
+For the first time, I recommend you to run the `main.py` 3 times:
+1. First, run for products
+2. Second and third times for either reviews or product specifications
 
-```
-python products_crawler.py
-```
-
-
-Run reviews crawler to collect all reviews of each already scrapped products. 
-
-```
-python reviews_crawler.py
-```
-
-Although, it is possible to run them all at once, I recommend you to parse reviews one by one (comment/uncomment categories), so that you could check each category integrity
