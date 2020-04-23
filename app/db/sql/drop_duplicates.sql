@@ -18,6 +18,17 @@ from category
 where source_id = 410
   and name = 'computers';
 
+delete
+from category
+where source_id = 7
+  and name = 'computers';
+
+
+delete
+from category
+where source_id = 588
+  and name = 'computers';
+
 -- name: drop-cpu-rating-duplicates
 delete
 from cpu_rating a
