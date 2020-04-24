@@ -85,13 +85,8 @@ def parse_reviews():
                     "comment_text": review["comment"]["text"],
                 }
 
-                approved = rated = None
                 review_rating = review["feedback"]["reviewsRating"]
-
-                if review_rating:
-                    match = re.search("(\d+)\s+из\s+(\d+)", review_rating)
-                    approved, rated = match.groups()
-
+                approved, rated = _parse_approved_rated(review_rating)
                 review_dict["review_approved"] = approved
                 review_dict["review_rated"] = rated
 
@@ -119,6 +114,15 @@ def parse_specs():
 
     with open(f"{DB_DUMPS_DIR}/specs.json", "w") as f:
         json.dump(specs, f, ensure_ascii=False)
+
+
+def _parse_approved_rated(review_rating):
+    if not review_rating:
+        return None, None
+
+    match = re.search(r"(\d+\s*\d*)\s+из\s+(\d+\s*\d*)", review_rating)
+    approved, rated = map(lambda x: x.replace(" ", ""), match.groups())
+    return approved, rated
 
 
 if __name__ == "__main__":
