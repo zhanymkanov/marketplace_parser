@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import unicodedata
 from datetime import date, datetime
 
 import orjson
@@ -120,8 +121,9 @@ def _parse_approved_rated(review_rating):
     if not review_rating:
         return None, None
 
+    review_rating = unicodedata.normalize("NFKD", review_rating)
     match = re.search(r"(\d+\s*\d*)\s+из\s+(\d+\s*\d*)", review_rating)
-    approved, rated = map(lambda x: x.replace(" ", ""), match.groups())
+    approved, rated = map(lambda x: int(x.replace(" ", "")), match.groups())
     return approved, rated
 
 
