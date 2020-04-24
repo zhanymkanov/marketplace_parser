@@ -53,8 +53,8 @@ create table if not exists review
     comment_plus    text,
     comment_minus   text,
     comment_text    text,
-    review_approved text,
-    review_rated    text,
+    review_approved smallint,
+    review_rated    smallint,
     created_at      date default current_date
 );
 
