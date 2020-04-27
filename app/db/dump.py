@@ -15,21 +15,15 @@ RATINGS_DIR = f"../{RATINGS_DIR}"
 def dump_into_tables():
     db = LocalSession()
     queries = db.insert_queries
+    dumpfiles_with_queries = (
+        ("categories.json", queries.bulk_insert_categories),
+        ("products.json", queries.bulk_insert_products),
+        ("reviews.json", queries.bulk_insert_reviews),
+        ("specs.json", queries.bulk_insert_specs),
+    )
 
-    source_files = (
-        "categories.json",
-        "products.json",
-        "reviews.json",
-        "specs.json",
-    )
-    queries = (
-        queries.bulk_insert_categories.sql,
-        queries.bulk_insert_products.sql,
-        queries.bulk_insert_reviews.sql,
-        queries.bulk_insert_specs.sql,
-    )
-    for source_file, query in zip(source_files, queries):
-        _insert_from_source(source_file, query)
+    for source_file, query in dumpfiles_with_queries:
+        _insert_from_source(source_file, query.sql)
 
 
 def dump_into_product_details():
