@@ -88,9 +88,7 @@ def parse_reviews():
 
                 review_rating = review["feedback"]["reviewsRating"]
                 approved, rated = _parse_approved_rated(review_rating)
-                review_dict["review_approved"] = approved
-                review_dict["review_rated"] = rated
-
+                review_dict.update({"review_approved": approved, "review_rated": rated})
                 reviews.append(review_dict)
 
     with open(f"{DB_DUMPS_DIR}/reviews.json", "wb") as f:
@@ -108,10 +106,8 @@ def parse_specs():
     specs = []
     for category in categories_with_specs:
         products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-specs.json")
-
         for product in products:
-            spec = processed_specs(product)
-            specs.append(spec)
+            specs.append(processed_specs(product))
 
     with open(f"{DB_DUMPS_DIR}/specs.json", "w") as f:
         json.dump(specs, f, ensure_ascii=False)
