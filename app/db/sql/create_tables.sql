@@ -75,3 +75,21 @@ create table if not exists cpu_rating
     rate   float4,
     versus text
 );
+
+-- name: inherit-smartphones
+create table if not exists smartphones
+(
+    check (category_id = 3)
+) inherits (product);
+
+-- name: inherit-desktops
+create table if not exists desktops
+(
+    check (category_id = 7)
+) inherits (product);
+
+-- name: inherit-desktops
+create table if not exists notebooks
+(
+    check (category_id = 588)
+) inherits (product);
