@@ -76,20 +76,58 @@ create table if not exists cpu_rating
     versus text
 );
 
--- name: inherit-smartphones
-create table if not exists smartphones
-(
-    check (category_id = 3)
-) inherits (product);
+-- name: create-view-desktops
+create materialized view desktops as
+select p.id as    p_id,
+       c.name,
+       p.source_id,
+       title,
+       price_sale price,
+       brand,
+       rating,
+       reviews_quantity,
+       s.cpu,
+       cr.rate    cpu_rate,
+       hertz,
+       cores,
+       s.gpu,
+       gr.rate    gpu_rate,
+       ram,
+       ram_type,
+       ssd,
+       drive_size,
+       url
+from product p
+         join category c on p.category_id = c.source_id
+         join specs s on p.source_id = s.product_id
+         join cpu_rating cr on s.cpu = cr.cpu
+         join gpu_rating gr on s.gpu = gr.gpu
+where name = 'desktops';
 
--- name: inherit-desktops
-create table if not exists desktops
-(
-    check (category_id = 7)
-) inherits (product);
-
--- name: inherit-desktops
-create table if not exists notebooks
-(
-    check (category_id = 588)
-) inherits (product);
+-- name: create-view-notebooks
+create materialized view notebooks as
+select p.id as    p_id,
+       c.name,
+       p.source_id,
+       title,
+       price_sale price,
+       brand,
+       rating,
+       reviews_quantity,
+       s.cpu,
+       cr.rate    cpu_rate,
+       hertz,
+       cores,
+       s.gpu,
+       gr.rate    gpu_rate,
+       ram,
+       ram_type,
+       ssd,
+       drive_size,
+       url
+from product p
+         join category c on p.category_id = c.source_id
+         join specs s on p.source_id = s.product_id
+         join cpu_rating cr on s.cpu = cr.cpu
+         join gpu_rating gr on s.gpu = gr.gpu
+where name = 'notebooks';
