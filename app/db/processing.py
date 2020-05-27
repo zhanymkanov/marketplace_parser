@@ -176,10 +176,10 @@ def _extract_ram_type(ram: str):
     if not ram:
         return
 
-    pattern = r"L?P?DDR\d[Lx]?"
+    pattern = r"DDR(\d)"
     match = re.search(pattern, ram)
     if match:
-        return match.group()
+        return match.group(1)
 
 
 def _extract_ssd(ssd: str):
