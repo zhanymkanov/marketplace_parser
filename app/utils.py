@@ -29,10 +29,10 @@ def parse_latest_date(dir):
     parse_date = date.today()
 
     if not os.path.exists(f"{dir}/{parse_date}"):
-        LOGGER.warning(f"Products for {parse_date} are not parsed and collected yet")
+        LOGGER.warning(f"Data for {parse_date} are not parsed and collected yet")
         parse_date = _get_latest_date_in_dir(dir)
 
-    LOGGER.info(f"Reviews from {parse_date} are being parsed")
+    LOGGER.info(f"Data from {parse_date} are being parsed")
 
     return parse_date
 
