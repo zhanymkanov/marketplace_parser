@@ -12,6 +12,7 @@ DB_DUMPS_DIR = f"../{DB_DUMPS_DIR}"
 RATINGS_DIR = f"../{RATINGS_DIR}"
 
 
+@perf_logger
 def dump_into_tables():
     db = LocalSession()
     queries = db.insert_queries
@@ -26,15 +27,7 @@ def dump_into_tables():
         _insert_from_source(source_file, query.sql)
 
 
-def dump_into_product_details():
-    db = LocalSession()
-
-    queries = db.insert_queries
-    query = queries.bulk_insert_product_details
-
-    _insert_from_source("product_details.json", query.sql)
-
-
+@perf_logger
 def dump_ratings_into_tables():
     cpu_columns = ("cpu", "rate", "versus")
     cpu_rating_files = ("laptop_cpus_versus.csv", "pc_cpus_versus.csv")
@@ -46,6 +39,7 @@ def dump_ratings_into_tables():
     _copy_rating_from_files(gpu_rating_files, "gpu_rating", gpu_columns)
 
 
+@perf_logger
 def create_indexes():
     db = LocalSession()
     queries = db.create_index_queries
@@ -63,6 +57,7 @@ def create_indexes():
         db.exec_query(query.sql)
 
 
+@perf_logger
 def drop_indexes():
     db = LocalSession()
     queries = db.drop_index_queries
@@ -79,6 +74,7 @@ def drop_indexes():
         db.exec_query(query.sql)
 
 
+@perf_logger
 def drop_duplicates():
     db = LocalSession()
     queries = db.drop_duplicates_queries
@@ -92,6 +88,19 @@ def drop_duplicates():
 
     for query in queries:
         db.exec_query(query.sql)
+
+
+@perf_logger
+def create_views():
+    db = LocalSession()
+    queries = db.table_queries
+    queries = [
+        queries.create_view_notebooks.sql,
+        queries.create_view_desktops.sql,
+    ]
+
+    for query in queries:
+        db.exec_query(query)
 
 
 @perf_logger
@@ -118,3 +127,4 @@ if __name__ == "__main__":
     dump_ratings_into_tables()
     drop_duplicates()
     create_indexes()
+    create_views()
