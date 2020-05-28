@@ -2,7 +2,7 @@
 delete
 from product a
     using product b
-where a.id > b.id
+where a.id < b.id
   and a.source_id = b.source_id;
 
 -- name: drop-review-duplicates
@@ -14,20 +14,15 @@ where a.id > b.id
 
 -- name: drop-category-duplicates
 delete
-from category
-where source_id = 410
-  and name = 'computers';
+from review
+where product_id not in (select distinct source_id from product);
 
 delete
-from category
-where source_id = 7
-  and name = 'computers';
+from category a
+    using category b
+where a.id < b.id
+  and a.source_id = b.source_id;
 
-
-delete
-from category
-where source_id = 588
-  and name = 'computers';
 
 -- name: drop-cpu-rating-duplicates
 delete
