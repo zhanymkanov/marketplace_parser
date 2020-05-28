@@ -26,11 +26,25 @@ def parse_categories():
 
     categories = os.listdir(products_latest)
     categories = [c for c in categories if not c.startswith(".")]
+    categories_with_specs = (
+        "desktops",
+        "notebooks",
+    )
 
     categories_set = set()
+    used_categories = set()
+    for category in categories_with_specs:
+        category_products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
+        for product in category_products:
+            categories_set.add((product["category_name"], product["category_id"]))
+            used_categories.add(product["category_id"])
+
     for category in categories:
         products = load_json(f"{products_latest}/{category}")
         for product in products:
+            if product["category_id"] in used_categories:
+                continue
+
             name = product["category_name"].replace("%20", " ")
             categories_set.add((name, product["category_id"]))
 
@@ -48,10 +62,24 @@ def parse_products():
 
     categories = os.listdir(products_latest)
     categories = [c for c in categories if not c.startswith(".")]
+    categories_with_specs = (
+        "desktops",
+        "notebooks",
+    )
 
     products = []
+    used_products = set()
+
+    for category in categories_with_specs:
+        category_products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
+        used_products.update({p["source_id"] for p in category_products})
+        products.extend(category_products)
+
     for category in categories:
         category_products = load_json(f"{products_latest}/{category}")
+        category_products = [
+            p for p in category_products
+        ]
         products.extend(category_products)
 
     with open(f"{DB_DUMPS_DIR}/products.json", "w") as f:
