@@ -102,7 +102,7 @@ from product p
          join specs s on p.source_id = s.product_id
          join cpu_rating cr on s.cpu = cr.cpu
          join gpu_rating gr on s.gpu = gr.gpu
-where name = 'desktops';
+where c.name  = 'desktops';
 
 -- name: create-view-notebooks
 create materialized view notebooks as
@@ -130,4 +130,4 @@ from product p
          join specs s on p.source_id = s.product_id
          join cpu_rating cr on s.cpu = cr.cpu
          join gpu_rating gr on s.gpu = gr.gpu
-where name = 'notebooks';
+where c.name  = 'notebooks';
