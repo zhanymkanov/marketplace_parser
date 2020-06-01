@@ -2,7 +2,7 @@
 The project helps to parse the largest Kazakhstani marketplace: products and reviews using site API.
 
 ## Parsed data can be downloaded here:
-https://github.com/zhanymkanov/russian_reviews_dataset
+https://github.com/zhanymkanov/reviews_dataset
 - Partially cleaned (both raw and cleaned versions are available though)
 - ~150k rows
 
