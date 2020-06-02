@@ -1,23 +1,13 @@
 version: '3.7'
 
-x-environment-vars: &environment-vars
-  DEBUG: "True"
-  PYTHONUNBUFFERED: 1
-  PYTHONDONTWRITEBYTECODE: 1
-  PYTHONIOENCODING: utf-8
-  DATABASE_URL: postgresql://postgres:yfhenjthf98@host.docker.internal/techsoulai
-
 services:
-  web:
+  parser:
     build: .
     volumes:
       - ./:/proj
     ports:
       - 8002:8000
-    environment:
-      <<: *environment-vars
+    env_file:
+      - .env
     stdin_open: true
     tty: true
-
-volumes:
-  postgres_data:
