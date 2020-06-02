@@ -26,26 +26,29 @@ def parse_categories():
 
     categories = os.listdir(products_latest)
     categories = [c for c in categories if not c.startswith(".")]
-    categories_with_specs = (
+    computer_subcategories = (
         "desktops",
         "notebooks",
     )
 
-    categories_set = set()
-    used_categories = set()
-    for category in categories_with_specs:
+    categories_set, categories_with_specs = set(), {}
+
+    # Desktops and Notebooks categories inherit from Computers,
+    # so they might have IDs intersection
+    for category in computer_subcategories:
         category_products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
-        for product in category_products:
-            categories_set.add((product["category_name"], product["category_id"]))
-            used_categories.add(product["category_id"])
+        categories_with_specs.update(
+            {p["category_id"]: category for p in category_products}
+        )
 
     for category in categories:
         products = load_json(f"{products_latest}/{category}")
         for product in products:
-            if product["category_id"] in used_categories:
-                continue
+            if product["category_id"] in categories_with_specs:
+                name = categories_with_specs[product["category_id"]]
+            else:
+                name = product["category_name"].replace("%20", " ")
 
-            name = product["category_name"].replace("%20", " ")
             categories_set.add((name, product["category_id"]))
 
     categories_sorted = sorted(categories_set, key=lambda x: (x[0], x[1]))
@@ -67,18 +70,16 @@ def parse_products():
         "notebooks",
     )
 
-    products = []
-    used_products = set()
-
+    products, products_with_specs = [], set()
     for category in categories_with_specs:
         category_products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
-        used_products.update({p["source_id"] for p in category_products})
+        products_with_specs.update({p["source_id"] for p in category_products})
         products.extend(category_products)
 
     for category in categories:
         category_products = load_json(f"{products_latest}/{category}")
         category_products = [
-            p for p in category_products
+            p for p in category_products if p["source_id"] not in products_with_specs
         ]
         products.extend(category_products)
 
@@ -104,20 +105,21 @@ def parse_reviews():
             product_reviews = load_json(f"{reviews_latest}/{category}/{product}")
 
             for review in product_reviews["data"]:
-                review_dict = {
-                    "product_id": product_id,
-                    "source_id": review["id"],
-                    "date": datetime.strptime(review["date"], "%d.%m.%Y"),
-                    "rating": review["rating"],
-                    "comment_plus": review["comment"]["plus"],
-                    "comment_minus": review["comment"]["minus"],
-                    "comment_text": review["comment"]["text"],
-                }
-
                 review_rating = review["feedback"]["reviewsRating"]
                 approved, rated = _parse_approved_rated(review_rating)
-                review_dict.update({"review_approved": approved, "review_rated": rated})
-                reviews.append(review_dict)
+                reviews.append(
+                    {
+                        "product_id": product_id,
+                        "source_id": review["id"],
+                        "date": datetime.strptime(review["date"], "%d.%m.%Y"),
+                        "rating": review["rating"],
+                        "comment_plus": review["comment"]["plus"],
+                        "comment_minus": review["comment"]["minus"],
+                        "comment_text": review["comment"]["text"],
+                        "review_approved": approved,
+                        "review_rated": rated,
+                    }
+                )
 
     with open(f"{DB_DUMPS_DIR}/reviews.json", "wb") as f:
         f.write(orjson.dumps(reviews))
@@ -134,8 +136,7 @@ def parse_specs():
     specs = []
     for category in categories_with_specs:
         products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-specs.json")
-        for product in products:
-            specs.append(processed_specs(product))
+        specs.extend([processed_specs(p) for p in products])
 
     with open(f"{DB_DUMPS_DIR}/specs.json", "w") as f:
         json.dump(specs, f, ensure_ascii=False)
