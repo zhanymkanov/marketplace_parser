@@ -6,7 +6,7 @@ services:
     volumes:
       - ./:/proj
     ports:
-      - 8002:8000
+      - 8001:8000
     env_file:
       - .env
     stdin_open: true
