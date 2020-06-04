@@ -8,11 +8,11 @@ https://github.com/zhanymkanov/reviews_dataset
 
 # How it works
 ## Parser steps
-1. Crawl products JSON lists
-2. Crawl reviews based on products list
-3. Crawl laptops, PCs, smartphones specs based on products list
-4. Cleans the collected JSON files and extracts valuable information from the specifications
-5. Dumps data into the database
+1. Use Products API to get JSON List of the products
+2. Use Products JSON List to crawl Products Specifications from HTML pages
+3. Use Products JSON List to request Reviews API for every product
+4. Clean the collected JSON files and extract valuable information from the specifications
+5. Dump data into the database
 
 ### Comment on API access
 <i>
@@ -20,28 +20,24 @@ https://github.com/zhanymkanov/reviews_dataset
 
   I had to do some stuff with my outgoing traffic to find out its endpoints. 
 
-  Therefore, I think it is not tethical to put it online, but to say that is easy to get them
+  Therefore, I think it is not tethical to put it online.
 </i>
 
 ## Installation
 ### Prerequisites
 1. Python 3.6+
-2. Docker, docker-compose
+2. Docker - optional
 
 ### Installation steps
-1. Download the project
+1. Get the project
 ```
 git clone https://github.com/zhanymkanov/reviews_parser
 ```
-2. Set up the container
+2a. Install the packages without docker
 ```
-docker-compose build
+pip install -r requirements/base.txt
 ```
-
-## Parser usage
-To run the app you need to know API endpoints, which is currently not available to be shared, but discovered by yourselves.
-If you have them, modify the main.py so that you parse only required categories.
-For the first time, I recommend you to run the `main.py` 3 times:
-1. First, run for products
-2. Second and third times for either reviews or product specifications
-
+2b. Install the packages with docker
+```
+docker-compose up -d --build
+```
