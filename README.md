@@ -1,16 +1,18 @@
 # About
-The project helps to parse the largest Kazakhstani marketplace: products and reviews using site API.
+The project helps to crawl the largest Kazakhstani marketplace.
 
 ## Parsed data can be downloaded here:
 https://github.com/zhanymkanov/reviews_dataset
 - Partially cleaned (both raw and cleaned versions are available though)
-- ~150k rows
+- ~190k rows
 
 # How it works
 ## Parser steps
 1. Crawl products JSON lists
 2. Crawl reviews based on products list
 3. Crawl laptops, PCs, smartphones specs based on products list
+4. Cleans the collected JSON files and extracts valuable information from the specifications
+5. Dumps data into the database
 
 ### Comment on API access
 <i>
@@ -24,24 +26,16 @@ https://github.com/zhanymkanov/reviews_dataset
 ## Installation
 ### Prerequisites
 1. Python 3.6+
-2. pip
-
-### Dependencies
-1. scrapy
-2. pydantic
-3. python-decouple
-4. orjson
-5. psycopg2-binary
-6. anosql
+2. Docker, docker-compose
 
 ### Installation steps
 1. Download the project
 ```
 git clone https://github.com/zhanymkanov/reviews_parser
 ```
-2. Install the packages
+2. Set up the container
 ```
-pip install -r requirements/base.txt
+docker-compose build
 ```
 
 ## Parser usage
