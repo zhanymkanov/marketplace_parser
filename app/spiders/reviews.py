@@ -12,7 +12,7 @@ REVIEWS_PER_REQUEST = 5000
 
 
 class ReviewsSpider(scrapy.Spider):
-    url = config("API_REVIEWS_URL")
+    url = config("REVIEWS_API")
 
     def __init__(self, category):
         super().__init__()
@@ -26,9 +26,7 @@ class ReviewsSpider(scrapy.Spider):
                 url=self.url.format(product["source_id"], REVIEWS_PER_REQUEST),
                 headers=HEADER_REVIEWS,
                 callback=self.write_product_reviews,
-                cb_kwargs={
-                    "product_id": product["source_id"],
-                },
+                cb_kwargs={"product_id": product["source_id"]},
             )
 
     def write_product_reviews(self, response, product_id):
