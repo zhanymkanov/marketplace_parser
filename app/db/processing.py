@@ -88,8 +88,6 @@ def _cleaned_gpu(gpu: str):
 
 def _extract_hertz(raw_hertz: str):
     """
-    Extract hertz
-
     Hertz:
         - 2-х ядерный 2.4 ГГц
         - 4-х ядерный, 1.6 ГГц
@@ -104,21 +102,41 @@ def _extract_hertz(raw_hertz: str):
     if not raw_hertz:
         return
 
+    return _extract_megahertz(raw_hertz) or _extract_gigahertz(raw_hertz)
+
+
+def _extract_megahertz(raw_hertz):
     patterns_mhz = (r"(\d\d\d\d)",)
     for pattern in patterns_mhz:
-        match = re.search(pattern, raw_hertz)
-        if match:
+        if match := re.search(pattern, raw_hertz):
             return match.group()
 
+
+def _extract_gigahertz(raw_hertz):
     patterns_ghz = (
         r"(\d\.\d)",
         r"(\d,\d)",
     )
     for pattern in patterns_ghz:
-        match = re.search(pattern, raw_hertz)
-        if match:
-            hertz = float(match.group().replace(",", ".")) * 1000
-            return int(hertz)
+        if match := re.search(pattern, raw_hertz):
+            hertz = match.group()
+            return _gigahertz_to_megahertz(hertz)
+
+
+def _gigahertz_to_megahertz(gigahertz):
+    """
+    Convert GigaHertz to MegaHertz
+
+    Input:
+        ghz - 3,3 or 3.3
+
+    Output:
+        mhz - 3300
+    """
+    gigahertz = gigahertz.replace(",", ".")
+    megahertz = float(gigahertz) * 1000
+
+    return int(megahertz)
 
 
 def _extract_cores(raw_cores: str):
