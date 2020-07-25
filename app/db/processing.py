@@ -54,11 +54,9 @@ def _cleaned_dict(d: dict):
 
 def _cleaned_gpu(gpu: str):
     """
-    Clean GPU
-
     GPU:
-        if any russian letter in the word, drop the word
-            - but if ends with "," then add "+"
+        if any russian letter is in the word, drop the word
+            - but if ends with "," add "+"
         if only english letters in the word and it ends with ","
             - then add word
             - then add "+"
