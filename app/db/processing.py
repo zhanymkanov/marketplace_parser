@@ -141,8 +141,6 @@ def _gigahertz_to_megahertz(gigahertz):
 
 def _extract_cores(raw_cores: str):
     """
-    Extract cores number
-
     raw_cores:
         - 2-х ядерный 2.4 ГГц
         - 4-х ядерный, 1.6 ГГц
@@ -160,8 +158,7 @@ def _extract_cores(raw_cores: str):
         r"(\d) ядер",
     )
     for pattern in patterns:
-        match = re.search(pattern, raw_cores)
-        if match:
+        if match := re.search(pattern, raw_cores):
             return match.group(1)
 
 
@@ -182,8 +179,7 @@ def _extract_ram_size(raw_ram: str):
     )
 
     for pattern in patterns_size:
-        match = re.search(pattern, raw_ram)
-        if match:
+        if match := re.search(pattern, raw_ram):
             return match.group(1)
 
 
@@ -193,8 +189,7 @@ def _extract_ram_type(ram: str):
         return
 
     pattern = r"DDR(\d)"
-    match = re.search(pattern, ram)
-    if match:
+    if match := re.search(pattern, ram):
         return match.group(1)
 
 
@@ -213,6 +208,5 @@ def _extract_drive_size(drive_size: str):
         return
 
     pattern = r"(\d+) \w{2}"
-    match = re.search(pattern, drive_size)
-    if match:
+    if match := re.search(pattern, drive_size):
         return match.group(1)
