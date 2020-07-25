@@ -54,11 +54,9 @@ def _cleaned_dict(d: dict):
 
 def _cleaned_gpu(gpu: str):
     """
-    Clean GPU
-
     GPU:
-        if any russian letter in the word, drop the word
-            - but if ends with "," then add "+"
+        if any russian letter is in the word, drop the word
+            - but if ends with "," add "+"
         if only english letters in the word and it ends with ","
             - then add word
             - then add "+"
@@ -90,8 +88,6 @@ def _cleaned_gpu(gpu: str):
 
 def _extract_hertz(raw_hertz: str):
     """
-    Extract hertz
-
     Hertz:
         - 2-х ядерный 2.4 ГГц
         - 4-х ядерный, 1.6 ГГц
@@ -106,27 +102,45 @@ def _extract_hertz(raw_hertz: str):
     if not raw_hertz:
         return
 
+    return _extract_megahertz(raw_hertz) or _extract_gigahertz(raw_hertz)
+
+
+def _extract_megahertz(raw_hertz):
     patterns_mhz = (r"(\d\d\d\d)",)
     for pattern in patterns_mhz:
-        match = re.search(pattern, raw_hertz)
-        if match:
+        if match := re.search(pattern, raw_hertz):
             return match.group()
 
+
+def _extract_gigahertz(raw_hertz):
     patterns_ghz = (
         r"(\d\.\d)",
         r"(\d,\d)",
     )
     for pattern in patterns_ghz:
-        match = re.search(pattern, raw_hertz)
-        if match:
-            hertz = float(match.group().replace(",", ".")) * 1000
-            return int(hertz)
+        if match := re.search(pattern, raw_hertz):
+            hertz = match.group()
+            return _gigahertz_to_megahertz(hertz)
+
+
+def _gigahertz_to_megahertz(gigahertz):
+    """
+    Convert GigaHertz to MegaHertz
+
+    Input:
+        ghz - 3,3 or 3.3
+
+    Output:
+        mhz - 3300
+    """
+    gigahertz = gigahertz.replace(",", ".")
+    megahertz = float(gigahertz) * 1000
+
+    return int(megahertz)
 
 
 def _extract_cores(raw_cores: str):
     """
-    Extract cores number
-
     raw_cores:
         - 2-х ядерный 2.4 ГГц
         - 4-х ядерный, 1.6 ГГц
@@ -144,8 +158,7 @@ def _extract_cores(raw_cores: str):
         r"(\d) ядер",
     )
     for pattern in patterns:
-        match = re.search(pattern, raw_cores)
-        if match:
+        if match := re.search(pattern, raw_cores):
             return match.group(1)
 
 
@@ -166,8 +179,7 @@ def _extract_ram_size(raw_ram: str):
     )
 
     for pattern in patterns_size:
-        match = re.search(pattern, raw_ram)
-        if match:
+        if match := re.search(pattern, raw_ram):
             return match.group(1)
 
 
@@ -177,8 +189,7 @@ def _extract_ram_type(ram: str):
         return
 
     pattern = r"DDR(\d)"
-    match = re.search(pattern, ram)
-    if match:
+    if match := re.search(pattern, ram):
         return match.group(1)
 
 
@@ -197,6 +208,5 @@ def _extract_drive_size(drive_size: str):
         return
 
     pattern = r"(\d+) \w{2}"
-    match = re.search(pattern, drive_size)
-    if match:
+    if match := re.search(pattern, drive_size):
         return match.group(1)

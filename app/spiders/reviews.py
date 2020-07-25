@@ -6,51 +6,49 @@ import scrapy
 from decouple import config
 
 from app.constants import HEADER_REVIEWS, PRODUCTS_DIR, REVIEWS_DIR
-from app.utils import parse_latest_date
+from app.utils import get_latest_date_in_dir
+
+REVIEWS_PER_REQUEST = 5000
 
 
 class ReviewsSpider(scrapy.Spider):
-    url = config("API_REVIEWS_URL")
+    url = config("REVIEWS_API")
 
     def __init__(self, category):
         super().__init__()
-
-        parse_date = parse_latest_date(PRODUCTS_DIR)
-        self.parse_list = f"{PRODUCTS_DIR}/{parse_date}/{category}-list.json"
-
-        self.output_dir = f"{REVIEWS_DIR}/{date.today()}/{category}"
-        os.makedirs(self.output_dir, exist_ok=True)
-
-        self.log(f"Parser for {category} reviews has been started.")
+        self.category_reviews_dir = self._get_category_reviews_dir(category)
+        self.category_products = self._get_products_list(category)
 
     def start_requests(self):
-        with open(self.parse_list) as products_json:
-            products = json.load(products_json)
-            for product in products:
-                yield scrapy.Request(
-                    url=self.url.format(product["source_id"], 5000),
-                    headers=HEADER_REVIEWS,
-                    callback=self.parse_reviews,
-                    cb_kwargs={
-                        "product_id": product["source_id"],
-                        "actual_reviews_quantity": product["reviews_quantity"],
-                    },
-                )
+        for product in self.category_products:
+            yield scrapy.Request(
+                url=self.url.format(product["source_id"], REVIEWS_PER_REQUEST),
+                headers=HEADER_REVIEWS,
+                callback=self.write_product_reviews,
+                cb_kwargs={"product_id": product["source_id"]},
+            )
 
-    def parse_reviews(self, response, product_id, actual_reviews_quantity):
+    def write_product_reviews(self, response, product_id):
         reviews_json = response.body_as_unicode()
-        with open(f"{self.output_dir}/{product_id}.json", "w") as f:
+        with open(f"{self.category_reviews_dir}/{product_id}.json", "w") as f:
             f.write(reviews_json)
 
-        reviews = json.loads(reviews_json)
-        parsed_reviews_quantity = len(reviews["data"])
+    @staticmethod
+    def _get_category_reviews_dir(category):
+        category_dir = f"{REVIEWS_DIR}/{date.today()}/{category}"
+        os.makedirs(category_dir, exist_ok=True)
 
-        if actual_reviews_quantity != parsed_reviews_quantity:
-            self.logger.warning(
-                f"Product with id={product_id} "
-                f"received {parsed_reviews_quantity} reviews, "
-                f"but has {actual_reviews_quantity}"
-            )
+        return category_dir
+
+    @staticmethod
+    def _get_products_list(category):
+        parse_date = get_latest_date_in_dir(PRODUCTS_DIR)
+        category_products = f"{PRODUCTS_DIR}/{parse_date}/{category}-list.json"
+
+        with open(category_products) as category_products:
+            products = json.load(category_products)
+
+        return products
 
 
 class ComputersSpider(ReviewsSpider):
