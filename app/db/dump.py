@@ -4,7 +4,7 @@ from typing import List
 from app import utils
 from app.constants import DB_DUMPS_DIR, RATINGS_DIR
 from app.db.session import LocalSession
-from app.utils import load_json, perf_logger
+from app.utils import open_json, perf_logger
 
 LOGGER = logging.getLogger(__name__)
 
@@ -108,7 +108,7 @@ def _insert_from_source(source_file, query):
     db = LocalSession()
     date = utils.parse_latest_date(DB_DUMPS_DIR)
 
-    data: List[dict] = load_json(f"{DB_DUMPS_DIR}/{date}/{source_file}")
+    data: List[dict] = open_json(f"{DB_DUMPS_DIR}/{date}/{source_file}")
     db.bulk_insert_dicts(query, data)
 
 

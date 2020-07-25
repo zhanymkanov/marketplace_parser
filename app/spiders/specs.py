@@ -4,8 +4,7 @@ import scrapy
 from decouple import config
 
 from app.constants import SPECS_DIR
-from app.db import utils as db_utils
-from app.utils import load_json, parse_latest_date
+from app.utils import open_json, parse_latest_date
 
 
 class SpecsSpider(scrapy.Spider):
@@ -17,9 +16,7 @@ class SpecsSpider(scrapy.Spider):
         self.products_json = f"{SPECS_DIR}/{parse_date}/{category}-list.json"
 
     def start_requests(self):
-        parsed_ids = db_utils.get_dumped_product_details()
-        products = load_json(self.products_json)
-
+        products = open_json(self.products_json)
         for product in products:
             if product["source_id"] in parsed_ids:
                 continue

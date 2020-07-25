@@ -20,7 +20,7 @@ def perf_logger(func):
     return wrapper
 
 
-def load_json(path):
+def open_json(path):
     with open(path) as f:
         return json.load(f)
 

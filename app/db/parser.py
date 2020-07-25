@@ -9,7 +9,7 @@ import orjson
 from app import utils
 from app.constants import DB_DUMPS_DIR, PRODUCTS_DIR, REVIEWS_DIR, SPECS_DIR
 from app.db.processing import processed_specs
-from app.utils import load_json, perf_logger
+from app.utils import open_json, perf_logger
 
 PRODUCTS_DIR = f"../{PRODUCTS_DIR}"
 REVIEWS_DIR = f"../{REVIEWS_DIR}"
@@ -36,13 +36,13 @@ def parse_categories():
     # Desktops and Notebooks categories inherit from Computers,
     # so they might have IDs intersection
     for category in computer_subcategories:
-        category_products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
+        category_products = open_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
         categories_with_specs.update(
             {p["category_id"]: category for p in category_products}
         )
 
     for category in categories:
-        products = load_json(f"{products_latest}/{category}")
+        products = open_json(f"{products_latest}/{category}")
         for product in products:
             if product["category_id"] in categories_with_specs:
                 name = categories_with_specs[product["category_id"]]
@@ -72,12 +72,12 @@ def parse_products():
 
     products, products_with_specs = [], set()
     for category in categories_with_specs:
-        category_products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
+        category_products = open_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
         products_with_specs.update({p["source_id"] for p in category_products})
         products.extend(category_products)
 
     for category in categories:
-        category_products = load_json(f"{products_latest}/{category}")
+        category_products = open_json(f"{products_latest}/{category}")
         category_products = [
             p for p in category_products if p["source_id"] not in products_with_specs
         ]
@@ -102,7 +102,7 @@ def parse_reviews():
 
         for product in products:
             product_id = product[: product.index(".json")]
-            product_reviews = load_json(f"{reviews_latest}/{category}/{product}")
+            product_reviews = open_json(f"{reviews_latest}/{category}/{product}")
 
             for review in product_reviews["data"]:
                 review_rating = review["feedback"]["reviewsRating"]
@@ -135,7 +135,7 @@ def parse_specs():
 
     specs = []
     for category in categories_with_specs:
-        products = load_json(f"{SPECS_DIR}/{date_latest}/{category}-specs.json")
+        products = open_json(f"{SPECS_DIR}/{date_latest}/{category}-specs.json")
         specs.extend([processed_specs(p) for p in products])
 
     with open(f"{DB_DUMPS_DIR}/specs.json", "w") as f:
