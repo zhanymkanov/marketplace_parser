@@ -4,7 +4,8 @@ from typing import List
 from app import utils
 from app.constants import DB_DUMPS_DIR, RATINGS_DIR
 from app.db.session import LocalSession
-from app.utils import open_json, perf_logger
+from app.utils import open_json
+from app.db.utils import perf_logger
 
 LOGGER = logging.getLogger(__name__)
 

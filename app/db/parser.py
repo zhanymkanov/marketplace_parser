@@ -9,7 +9,8 @@ import orjson
 from app import utils
 from app.constants import DB_DUMPS_DIR, PRODUCTS_DIR, REVIEWS_DIR, SPECS_DIR
 from app.db.processing import processed_specs
-from app.utils import open_json, perf_logger
+from app.utils import open_json
+from app.db.utils import perf_logger
 
 PRODUCTS_DIR = f"../{PRODUCTS_DIR}"
 REVIEWS_DIR = f"../{REVIEWS_DIR}"
