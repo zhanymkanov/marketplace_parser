@@ -12,21 +12,16 @@ class SpecsSpider(scrapy.Spider):
 
     def __init__(self, category):
         super().__init__()
-        parse_date = parse_latest_date(SPECS_DIR)
-        self.products_json = f"{SPECS_DIR}/{parse_date}/{category}-list.json"
+        self.products_json = self._get_category_products(category)
 
     def start_requests(self):
         products = open_json(self.products_json)
         for product in products:
-            if product["source_id"] in parsed_ids:
-                continue
-
             yield scrapy.Request(
                 url=product["url"],
                 cb_kwargs={"product": product},
                 callback=self.parse_product,
             )
-            parsed_ids.add(product["source_id"])
 
     def parse_product(self, response, product):
         """
@@ -59,6 +54,12 @@ class SpecsSpider(scrapy.Spider):
             "category_name": product["category_name"],
             "parsed_details": details,
         }
+
+    @staticmethod
+    def _get_category_products(category):
+        latest_date = parse_latest_date(SPECS_DIR)
+        category_products = f"{SPECS_DIR}/{latest_date}/{category}-list.json"
+        return category_products
 
 
 class SmartphoneSpecsSpider(SpecsSpider):
