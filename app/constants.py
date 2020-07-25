@@ -15,6 +15,7 @@ HEADER_DEFAULT = {
     "Accept-Language": "ru,en;q=0.9,kk;q=0.8,es;q=0.7,ba;q=0.6",
     "Connection": "keep-alive",
     "Host": config("host"),
+    "Referer": config("referer_link"),
     "Referrer Policy": "no-referrer-when-downgrade",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-origin",

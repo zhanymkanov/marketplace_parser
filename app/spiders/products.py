@@ -7,31 +7,35 @@ from decouple import config
 
 from app.constants import HEADER_DEFAULT, PRODUCTS_DIR, SPECS_DIR
 
+API_URL = config("PRODUCTS_API")
 
-class ListSpider(scrapy.Spider):
+
+class ProductsSpider(scrapy.Spider):
     page = 1
-    url = config("API_LIST_URL")
-    referer_link = config("referer_link")
 
-    def __init__(self, category, stop_if_no_reviews=True):
+    def __init__(self, category):
         super().__init__()
-        self.url = self.url.format(category=category, page="{}")
-        self.headers = copy.deepcopy(HEADER_DEFAULT)
-        self.headers["Referer"] = self.referer_link.format(category)
         self.category = category
-        self.stop_if_no_reviews = stop_if_no_reviews
+        self.url = self._get_category_url(category)
+        self.headers = self._get_category_headers(category)
 
     def start_requests(self):
-        url = self.url.format(self.page)
+        page_url = self.url.format(self.page)
         yield scrapy.Request(
-            url, callback=self.parse_products, headers=self.headers, dont_filter=True
+            page_url,
+            callback=self.parse_page_products,
+            headers=self.headers,
+            dont_filter=True,
         )
 
-    def parse_products(self, response):
-        total_reviews = 0
-        products = json.loads(response.text)
-        for product in products["data"]:
-            total_reviews += product["reviewsQuantity"]
+    def parse_page_products(self, response):
+        page_products = json.loads(response.text)
+        page_products = page_products["data"]
+
+        if not page_products:
+            return
+
+        for product in page_products:
             yield {
                 "source_id": product["id"],
                 "title": product["title"],
@@ -45,22 +49,34 @@ class ListSpider(scrapy.Spider):
                 "category_name": self.category,
             }
 
-        if products["data"]:
-            if total_reviews == 0 and self.stop_if_no_reviews:
-                return
+        yield from self.parse_next_page()
 
-            self.page += 1
-            url = self.url.format(self.page)
+    def parse_next_page(self):
+        if self.page > 100:
+            return
 
-            yield scrapy.Request(
-                url=url,
-                headers=self.headers,
-                callback=self.parse_products,
-                dont_filter=True,
-            )
+        self.page += 1
+        url = self.url.format(self.page)
+
+        yield scrapy.Request(
+            url=url,
+            headers=self.headers,
+            callback=self.parse_page_products,
+            dont_filter=True,
+        )
+
+    @staticmethod
+    def _get_category_url(category):
+        return API_URL.format(category=category, page="{}")
+
+    @staticmethod
+    def _get_category_headers(category):
+        headers = copy.deepcopy(HEADER_DEFAULT)
+        headers["Referer"] = headers["Referer"].format(category)
+        return headers
 
 
-class SmartphonesSpider(ListSpider):
+class SmartphonesSpider(ProductsSpider):
     name = "smartphones-list"
     category_link = "smartphones"
     custom_settings = {
@@ -70,10 +86,10 @@ class SmartphonesSpider(ListSpider):
     }
 
     def __init__(self):
-        super().__init__(self.category_link, stop_if_no_reviews=False)
+        super().__init__(self.category_link)
 
 
-class NotebooksSpider(ListSpider):
+class NotebooksSpider(ProductsSpider):
     name = "notebooks-list"
     category_link = "notebooks"
     custom_settings = {
@@ -83,10 +99,10 @@ class NotebooksSpider(ListSpider):
     }
 
     def __init__(self):
-        super().__init__(self.category_link, stop_if_no_reviews=False)
+        super().__init__(self.category_link)
 
 
-class DesktopsSpider(ListSpider):
+class DesktopsSpider(ProductsSpider):
     name = "desktops-list"
     category_link = "desktops"
     custom_settings = {
@@ -96,10 +112,10 @@ class DesktopsSpider(ListSpider):
     }
 
     def __init__(self):
-        super().__init__(self.category_link, stop_if_no_reviews=False)
+        super().__init__(self.category_link)
 
 
-class ComputersSpider(ListSpider):
+class ComputersSpider(ProductsSpider):
     name = "computers-list"
     category_link = "computers"
     custom_settings = {
@@ -109,10 +125,10 @@ class ComputersSpider(ListSpider):
     }
 
     def __init__(self):
-        super().__init__(self.category_link, stop_if_no_reviews=False)
+        super().__init__(self.category_link)
 
 
-class BeautySpider(ListSpider):
+class BeautySpider(ProductsSpider):
     name = "beauty-list"
     category_link = "beauty%20care%20equipment"
     custom_settings = {
@@ -125,7 +141,7 @@ class BeautySpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class PerfumeSpider(ListSpider):
+class PerfumeSpider(ProductsSpider):
     name = "perfumes-list"
     category_link = "perfumes"
     custom_settings = {
@@ -138,7 +154,7 @@ class PerfumeSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class BooksSpider(ListSpider):
+class BooksSpider(ProductsSpider):
     name = "books-list"
     category_link = "books"
     custom_settings = {
@@ -151,7 +167,7 @@ class BooksSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class CarAudioSpider(ListSpider):
+class CarAudioSpider(ProductsSpider):
     name = "car-audio-list"
     category_link = "car%20audio"
     custom_settings = {
@@ -164,7 +180,7 @@ class CarAudioSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class CarElectronicsSpider(ListSpider):
+class CarElectronicsSpider(ProductsSpider):
     name = "car-electronics-list"
     category_link = "car%20electronics"
     custom_settings = {
@@ -177,7 +193,7 @@ class CarElectronicsSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class HeadphonesSpider(ListSpider):
+class HeadphonesSpider(ProductsSpider):
     name = "headphones-list"
     category_link = "headphones"
     custom_settings = {
@@ -190,7 +206,7 @@ class HeadphonesSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class BigHomeAppliancesSpider(ListSpider):
+class BigHomeAppliancesSpider(ProductsSpider):
     name = "big-home-appl-list"
     category_link = "big%20home%20appliances"
     custom_settings = {
@@ -203,7 +219,7 @@ class BigHomeAppliancesSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class SmallHomeAppliancesSpider(ListSpider):
+class SmallHomeAppliancesSpider(ProductsSpider):
     name = "small-home-appl-list"
     category_link = "small%20home%20appliances"
     custom_settings = {
@@ -216,7 +232,7 @@ class SmallHomeAppliancesSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class ClimateEquipmentSpider(ListSpider):
+class ClimateEquipmentSpider(ProductsSpider):
     name = "climate-equipment-list"
     category_link = "climate%20equipment"
     custom_settings = {
@@ -229,7 +245,7 @@ class ClimateEquipmentSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class KitchenAppliancesSpider(ListSpider):
+class KitchenAppliancesSpider(ProductsSpider):
     name = "kitchen-home-appl-list"
     category_link = "kitchen%20appliances"
     custom_settings = {
@@ -242,7 +258,7 @@ class KitchenAppliancesSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class MemoryCardsSpider(ListSpider):
+class MemoryCardsSpider(ProductsSpider):
     name = "memory-cards-list"
     category_link = "memory%20cards"
     custom_settings = {
@@ -255,7 +271,7 @@ class MemoryCardsSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class PortableSpeakersSpider(ListSpider):
+class PortableSpeakersSpider(ProductsSpider):
     name = "portable-speakers-list"
     category_link = "portable%20speakers"
     custom_settings = {
@@ -268,7 +284,7 @@ class PortableSpeakersSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class PowerBanksSpider(ListSpider):
+class PowerBanksSpider(ProductsSpider):
     name = "power-banks-list"
     category_link = "power%20banks"
     custom_settings = {
@@ -281,7 +297,7 @@ class PowerBanksSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class TiresSpider(ListSpider):
+class TiresSpider(ProductsSpider):
     name = "tires-list"
     category_link = "tires"
     custom_settings = {
@@ -294,7 +310,7 @@ class TiresSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class WatchesSpider(ListSpider):
+class WatchesSpider(ProductsSpider):
     name = "watches-list"
     category_link = "smart%20watches"
     custom_settings = {
@@ -307,7 +323,7 @@ class WatchesSpider(ListSpider):
         super().__init__(self.category_link)
 
 
-class WearablesSpider(ListSpider):
+class WearablesSpider(ProductsSpider):
     name = "wearables-list"
     category_link = "wearables"
     custom_settings = {
