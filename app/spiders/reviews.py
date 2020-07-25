@@ -18,7 +18,6 @@ class ReviewsSpider(scrapy.Spider):
         super().__init__()
         self.category_reviews_dir = self._get_category_reviews_dir(category)
         self.category_products = self._get_products_list(category)
-        self.log(f"Parser for {category} reviews has been started.")
 
     def start_requests(self):
         for product in self.category_products:
