@@ -1,5 +1,5 @@
 # About
-The project helps to crawl the largest Kazakhstani marketplace.
+Web-crawler for the local marketplace
 
 ## Parsed data can be downloaded here:
 https://github.com/zhanymkanov/reviews_dataset
@@ -11,8 +11,9 @@ https://github.com/zhanymkanov/reviews_dataset
 1. Use Products API to get JSON List of the products
 2. Use Products JSON List to crawl Products Specifications from HTML pages
 3. Use Products JSON List to request Reviews API for every product
-4. Clean the collected JSON files and extract valuable information from the specifications
-5. Dump data into the database
+4. Clean the collected JSON files
+5. Extract valuable information from Product Specifications
+6. Dump data into the database
 
 ### Comment on API access
 <i>
@@ -25,7 +26,7 @@ https://github.com/zhanymkanov/reviews_dataset
 
 ## Installation
 ### Prerequisites
-1. Python 3.6+
+1. Python 3.8+
 2. Docker - optional
 
 ### Installation steps
