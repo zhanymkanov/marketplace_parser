@@ -6,7 +6,7 @@ import scrapy
 from decouple import config
 
 from app.constants import HEADER_REVIEWS, PRODUCTS_DIR, REVIEWS_DIR
-from app.utils import parse_latest_date
+from app.utils import get_latest_date_in_dir
 
 REVIEWS_PER_REQUEST = 5000
 
@@ -42,7 +42,7 @@ class ReviewsSpider(scrapy.Spider):
 
     @staticmethod
     def _get_products_list(category):
-        parse_date = parse_latest_date(PRODUCTS_DIR)
+        parse_date = get_latest_date_in_dir(PRODUCTS_DIR)
         category_products = f"{PRODUCTS_DIR}/{parse_date}/{category}-list.json"
 
         with open(category_products) as category_products:

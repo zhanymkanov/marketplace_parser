@@ -107,7 +107,7 @@ def create_views():
 @perf_logger
 def _insert_from_source(source_file, query):
     db = LocalSession()
-    date = utils.parse_latest_date(DB_DUMPS_DIR)
+    date = utils.get_latest_date_in_dir(DB_DUMPS_DIR)
 
     data: List[dict] = open_json(f"{DB_DUMPS_DIR}/{date}/{source_file}")
     db.bulk_insert_dicts(query, data)

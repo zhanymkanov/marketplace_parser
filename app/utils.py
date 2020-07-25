@@ -14,23 +14,9 @@ def open_json(path):
         return json.load(f)
 
 
-def parse_latest_date(dir):
-    parse_date = date.today()
-
-    if not os.path.exists(f"{dir}/{parse_date}"):
-        LOGGER.warning(f"Data for {parse_date} are not parsed and collected yet")
-        parse_date = _get_latest_date_in_dir(dir)
-
-    LOGGER.info(f"Data from {parse_date} are being parsed")
-
-    return parse_date
-
-
-def _get_latest_date_in_dir(dir):
+def get_latest_date_in_dir(dir):
     parse_dates = sorted(os.listdir(dir))
-    parse_dates = [
-        parse_date for parse_date in parse_dates if not parse_date.startswith(".")
-    ]
+    parse_dates = filter_hidden_filenames(parse_dates)
 
     if not parse_dates:
         raise EmptyDirectoryException(
@@ -38,3 +24,7 @@ def _get_latest_date_in_dir(dir):
         )
 
     return parse_dates[-1]
+
+
+def filter_hidden_filenames(filenames):
+    return [filename for filename in filenames if not filename.startswith(".")]

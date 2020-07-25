@@ -4,7 +4,7 @@ import scrapy
 from decouple import config
 
 from app.constants import SPECS_DIR
-from app.utils import open_json, parse_latest_date
+from app.utils import open_json, get_latest_date_in_dir
 
 
 class SpecsSpider(scrapy.Spider):
@@ -57,7 +57,7 @@ class SpecsSpider(scrapy.Spider):
 
     @staticmethod
     def _get_category_products(category):
-        latest_date = parse_latest_date(SPECS_DIR)
+        latest_date = get_latest_date_in_dir(SPECS_DIR)
         category_products = f"{SPECS_DIR}/{latest_date}/{category}-list.json"
         return category_products
 
