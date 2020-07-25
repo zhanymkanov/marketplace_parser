@@ -4,7 +4,7 @@ import scrapy
 from decouple import config
 
 from app.constants import SPECS_DIR
-from app.utils import open_json, get_latest_date_in_dir
+from app.utils import get_latest_date_in_dir, open_json
 
 
 class SpecsSpider(scrapy.Spider):

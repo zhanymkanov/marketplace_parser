@@ -8,8 +8,8 @@ import orjson
 
 from app.constants import DB_DUMPS_DIR, PRODUCTS_DIR, REVIEWS_DIR, SPECS_DIR
 from app.db.processing import processed_specs
-from app.utils import open_json, get_latest_date_in_dir, filter_hidden_filenames
 from app.db.utils import perf_logger
+from app.utils import filter_hidden_filenames, get_latest_date_in_dir, open_json
 
 PRODUCTS_DIR = f"../{PRODUCTS_DIR}"
 REVIEWS_DIR = f"../{REVIEWS_DIR}"
@@ -124,9 +124,9 @@ def _parse_categories_id_name(categories, latest_parse_date):
     categories_id_name = {}
     for category in categories:
         products = open_json(f"{latest_parse_date}/{category}")
-        categories_id_name.update({
-            product["category_id"]: product["category_name"] for product in products
-        })
+        categories_id_name.update(
+            {product["category_id"]: product["category_name"] for product in products}
+        )
 
     return sorted(categories_id_name.items(), key=lambda id, name: (name, id))
 
