@@ -35,22 +35,10 @@ def parse_products():
 
     categories = os.listdir(products_latest)
     categories = [c for c in categories if not c.startswith(".")]
-    categories_with_specs = (
-        "desktops",
-        "notebooks",
-    )
 
-    products, products_with_specs = [], set()
-    for category in categories_with_specs:
-        category_products = open_json(f"{SPECS_DIR}/{date_latest}/{category}-list.json")
-        products_with_specs.update({p["source_id"] for p in category_products})
-        products.extend(category_products)
-
+    products = []
     for category in categories:
         category_products = open_json(f"{products_latest}/{category}")
-        category_products = [
-            p for p in category_products if p["source_id"] not in products_with_specs
-        ]
         products.extend(category_products)
 
     with open(f"{DB_DUMPS_DIR}/products.json", "w") as f:
