@@ -1,16 +1,5 @@
 # About
-Web-crawler for the local marketplace
-
-## Parsed data can be downloaded here:
-1. Reviews
-    - https://github.com/zhanymkanov/reviews_dataset
-    - Partially cleaned (both raw and cleaned versions are available though)
-    - ~190k rows
-2. Products
-    - https://github.com/zhanymkanov/marketplace_datasets
-    - 21000 `products.csv`
-    - 450+ computers with specifications stored in CSV
-    - Relevant CPU and GPU ratings from versus.com stored in CSV
+Marketplace Web-Crawler
 
 # How it works
 ## Parser steps
