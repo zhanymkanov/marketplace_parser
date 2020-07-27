@@ -1,11 +1,10 @@
 import logging
 from typing import List
 
-from app import utils
 from app.constants import DB_DUMPS_DIR, RATINGS_DIR
-from app.db.session import LocalSession
-from app.db.utils import perf_logger
-from app.utils import open_json
+from app.utils import get_latest_date_in_dir, open_json, perf_logger
+
+from .session import LocalSession
 
 LOGGER = logging.getLogger(__name__)
 
@@ -107,7 +106,7 @@ def create_views():
 @perf_logger
 def _insert_from_source(source_file, query):
     db = LocalSession()
-    date = utils.get_latest_date_in_dir(DB_DUMPS_DIR)
+    date = get_latest_date_in_dir(DB_DUMPS_DIR)
 
     data: List[dict] = open_json(f"{DB_DUMPS_DIR}/{date}/{source_file}")
     db.bulk_insert_dicts(query, data)
