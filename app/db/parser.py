@@ -22,8 +22,15 @@ os.makedirs(DB_DUMPS_DIR, exist_ok=True)
 
 @perf_logger
 def parse_categories():
-    latest_parse_date = _get_latest_parse_date()
-    categories = _get_categories(latest_parse_date)
+    categories = os.listdir(PRODUCTS_DIR)
+    categories = filter_hidden_filenames(categories)
+
+    categories_id_name = {}
+    for category in categories:
+        products = open_json(f"{PRODUCTS_DIR}/{category}")
+        categories_id_name.update(
+            {product["category_id"]: product["category_name"] for product in products}
+        )
 
     categories_id_name = sorted(
         categories_id_name.items(), key=lambda id, name: (name, id)
