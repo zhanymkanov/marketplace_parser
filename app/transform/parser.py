@@ -7,10 +7,10 @@ from datetime import date, datetime
 import orjson
 
 from app.constants import DB_DUMPS_DIR, PRODUCTS_DIR, REVIEWS_DIR, SPECS_DIR
-from app.utils import filter_hidden_filenames, open_json
+from app.utils import filter_hidden_filenames, open_json, perf_logger
 
 from .processing import processed_specs
-from .utils import get_localized_latest_subdirectory, perf_logger
+from .utils import get_localized_latest_subdirectory
 
 PRODUCTS_DIR = get_localized_latest_subdirectory(PRODUCTS_DIR)
 REVIEWS_DIR = get_localized_latest_subdirectory(REVIEWS_DIR)

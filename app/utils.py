@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import time
 
 from .exceptions import EmptyDirectoryException
 
@@ -27,3 +28,13 @@ def get_latest_date_in_dir(dir):
 
 def filter_hidden_filenames(filenames):
     return [filename for filename in filenames if not filename.startswith(".")]
+
+
+def perf_logger(func):
+    def wrapper(*args, **kwargs):
+        LOGGER.info(f"Started {func.__name__}")
+        start = time.perf_counter()
+        func(*args, **kwargs)
+        LOGGER.info(f"Finshed {func.__name__} in {time.perf_counter() - start}")
+
+    return wrapper
